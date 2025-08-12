@@ -1,6 +1,7 @@
 import { ArrowRight, Sparkles, Zap, Shield } from "lucide-react";
 import Hero from "../components/Hero";
 import QrGenerator from "../components/QRGenerator";
+import Features from "../components/Features";
 
 export default function Home() {
     return (
@@ -11,6 +12,7 @@ export default function Home() {
                 <p className="text-muted-foreground text-xl max-w-3xl mx-auto mb-10">No account needed! Try our generator now and see how easy it is to create professional QR codes.</p>
                 <QrGenerator />
             </section>
+            <Features />
         </div>
     );
 }
