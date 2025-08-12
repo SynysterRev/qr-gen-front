@@ -1,3 +1,5 @@
+import { Link } from 'react-scroll';
+
 export default function Hero() {
     return (
         <section>
@@ -14,12 +16,16 @@ export default function Hero() {
                 </h1>
                 <p className="text-muted-foreground text-xl max-w-3xl mx-auto mb-10">Generate beautiful, customizable QR codes for your business, events, or personal use. Track scans, analyze performance, no signup required to get started.</p>
                 <div className="flex justify-center items-center gap-4">
-                    <a className="rounded-xl bg-primary py-2 px-6 text-white cursor-pointer scroll-smooth transition-all group duration-300 hover:shadow-[var(--shadow-elegant)] 
-                    hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow">Try Free Generator
+                    <Link className="rounded-xl bg-primary py-2 px-6 text-white cursor-pointer scroll-smooth transition-all group duration-300 hover:shadow-[var(--shadow-elegant)] 
+                    hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow"
+                        to="qr-generation-section"
+                        smooth={true}
+                        duration={500}
+                        offset={-40}>Try Free Generator
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                             className="ml-4 inline h-4 w-4 lucide lucide-arrow-right-icon lucide-arrow-right group-hover:translate-x-1">
                             <path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                    </a>
+                    </Link>
                     <a className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20">Create Account</a>
                 </div>
             </div>

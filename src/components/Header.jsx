@@ -1,5 +1,3 @@
-import Card from "./Card";
-
 export default function Header() {
     return (
         <header className="border-b-1 border-gray-100 bg-background/95 backdrop-blur sticky top-0 z-50">
