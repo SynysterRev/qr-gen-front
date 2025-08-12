@@ -7,7 +7,7 @@ export default function QrGenerator() {
         text: "https://qrcraft.app",
         fillColor: "#8B5CF6",
         backgroundColor: "#ffffff",
-        scale: 8,
+        scale: 10,
         borderSize: 2,
     });
     const [qrPreviewUrl, setQrPreviewUrl] = useState(null);
@@ -63,7 +63,6 @@ export default function QrGenerator() {
         }
     }, [qrConfig, debouncedUpdate]);
 
-    // Fonction de mise à jour pour les inputs de type texte ou couleur
     function handleInputChange(e) {
         const { value, name } = e.currentTarget;
         setQrConfig(prevQrConfig => ({
@@ -72,12 +71,20 @@ export default function QrGenerator() {
         }));
     }
 
-    // Fonction de mise à jour pour les sliders
     function handleSliderChange(name, value) {
         setQrConfig(prevQrConfig => ({
             ...prevQrConfig,
             [name]: value
         }));
+    }
+
+    function handleDownload() {
+        const link = document.createElement('a');
+        link.href = qrPreviewUrl;
+        link.download = `qrcode-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     const finalSizePx = (qrModulesSize && qrModulesSize.length > 0)
@@ -127,29 +134,26 @@ export default function QrGenerator() {
                         <input className="border-1 border-black/10 rounded-xl p-2 w-full" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
                     </div>
                 </div>
-                {/* <button className="bg-primary rounded-xl text-white w-full py-2 cursor-pointer transition-all group duration-300 hover:shadow-[var(--shadow-elegant)] 
-            hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow">Generate QR Code</button> */}
             </div>
-
             <div className="rounded-xl shadow-2xl border-0 bg-white p-8 flex-1/2">
                 <h3 className="font-semibold text-2xl">Preview</h3>
-                <div className="flex justify-center items-center animate-float h-full">
+                <div className="flex justify-center items-center animate-float h-[400px]">
                     {isLoading && <div className="spinner">Loading...</div>}
-                    {!isLoading && qrPreviewUrl && qrModulesSize && qrModulesSize.length > 0 && (
-                        <div
-                            className="relative rounded-2xl overflow-hidden shadow-lg transition-all duration-300"
-                            style={{
-                                width: `${finalSizePx}px`,
-                                height: `${finalSizePx}px`
-                            }}
-                        >
+                    {!isLoading && qrPreviewUrl && (
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">
                             <img
                                 src={qrPreviewUrl}
                                 alt="qr preview"
                                 className="w-full h-full object-contain"
                             />
+                            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                {finalSizePx}×{finalSizePx}px
+                            </div>
                         </div>
                     )}
+                </div>
+                <div className="flex justify-center">
+                    <button onClick={handleDownload} className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20">Download</button>
                 </div>
             </div>
         </div>
