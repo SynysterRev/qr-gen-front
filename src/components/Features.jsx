@@ -84,38 +84,40 @@ export default function Features() {
     ]
 
     return (
-        <section>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent">Powerful Features </span>
-                for Every Need
-            </h2>
-            <p className="text-muted-foreground text-xl max-w-3xl mx-auto mb-10">From basic QR codes to advanced analytics, we've got everything you need to create, customize, and track your QR codes.</p>
-            <h3 className="text-xl md:text-2xl font-bold mb-4">Perfect for Every Use Case</h3>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">From small businesses to enterprise solutions, QRCraft adapts to your needs.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {useCases.map((useCase) => {
-                    return (
-                        <Card key={useCase.id} backgroundColor={useCase.backgroundColor} borderColor={useCase.borderColor} className="border-1">
-                            <h4 className={`font-semibold leading-none ${useCase.titleColor}`}>{useCase.title}</h4>
-                            <p className="text-muted-foreground text-sm">{useCase.description}</p>
-                        </Card>
-                    );
-                })}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-16">
-                {features.map((feature) => {
-                    return (
-                        <Card key={feature.id} borderColor={feature.borderColor} className="border-l-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-palette h-8 w-8 mb-2 ${feature.iconColor}`}>
-                                {feature.icon}
-                            </svg>
-                            <h4 className="font-semibold leading-none">{feature.title}</h4>
-                            <p className="text-muted-foreground text-sm p-0">{feature.description}</p>
-                        </Card>
-                    );
-                })
+        <section className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 py-8">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent">Powerful Features </span>
+                    for Every Need
+                </h2>
+                <p className="text-muted-foreground text-xl max-w-3xl mx-auto mb-10">From basic QR codes to advanced analytics, we've got everything you need to create, customize, and track your QR codes.</p>
+                <h3 className="text-xl md:text-2xl font-bold mb-4">Perfect for Every Use Case</h3>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">From small businesses to enterprise solutions, QRCraft adapts to your needs.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {useCases.map((useCase) => {
+                        return (
+                            <Card key={useCase.id} backgroundColor={useCase.backgroundColor} borderColor={useCase.borderColor} className="border-1">
+                                <h4 className={`font-semibold leading-none ${useCase.titleColor}`}>{useCase.title}</h4>
+                                <p className="text-muted-foreground text-sm">{useCase.description}</p>
+                            </Card>
+                        );
+                    })}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-16">
+                    {features.map((feature) => {
+                        return (
+                            <Card key={feature.id} borderColor={feature.borderColor} className="border-l-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-palette h-8 w-8 mb-2 ${feature.iconColor}`}>
+                                    {feature.icon}
+                                </svg>
+                                <h4 className="font-semibold leading-none">{feature.title}</h4>
+                                <p className="text-muted-foreground text-sm p-0">{feature.description}</p>
+                            </Card>
+                        );
+                    })
 
-                }
+                    }
+                </div>
             </div>
         </section>
     );

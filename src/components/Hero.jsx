@@ -1,7 +1,7 @@
 export default function Hero() {
     return (
         <section>
-            <div className="max-w-7xl mx-auto px-4 ">
+            <div className="container px-4 md:px-6 max-w-6xl mx-auto">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/40 px-4 py-2 text-primary mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 lucide lucide-sparkles-icon lucide-sparkle">
                         <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
