@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Slider from "./Slider";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+import clsx from 'clsx'
+
+const formats = [
+    { id: 1, name: "PNG" },
+    { id: 2, name: "SVG" },
+    { id: 3, name: "PDF" },
+];
 
 export default function QrGenerator() {
     const [qrConfig, setQrConfig] = useState({
@@ -9,7 +18,10 @@ export default function QrGenerator() {
         backgroundColor: "#ffffff",
         scale: 10,
         borderSize: 2,
+        format: formats[0].name
     });
+
+
     const [qrPreviewUrl, setQrPreviewUrl] = useState(null);
     const [qrModulesSize, setQrModulesSize] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -22,8 +34,9 @@ export default function QrGenerator() {
                 dark: config.fillColor,
                 light: config.backgroundColor,
                 scale: config.scale,
-                border: config.borderSize
-            }
+                border: config.borderSize,
+            },
+            format: config.format
         };
         fetch("http://127.0.0.1:8000/qr/preview", {
             method: "POST",
@@ -35,7 +48,7 @@ export default function QrGenerator() {
             .then(res => res.json())
             .then(data => {
                 const { qr_base64, qr_modules_size } = data;
-                const previewUrl = `data:image/png;base64,${qr_base64}`;
+                const previewUrl = `data:image/svg+xml;base64,${qr_base64}`;
                 setQrPreviewUrl(previewUrl);
                 setQrModulesSize(qr_modules_size);
             })
@@ -127,11 +140,57 @@ export default function QrGenerator() {
                         color="#8B5CF6"
                     />
                 </div>
-                <div className="flex flex-col my-4 gap-2">
-                    <label htmlFor="background-color">Background Color</label>
-                    <div className="flex gap-2">
-                        <input type="color" className="border-1 border-black/10 rounded-xl p-1 w-12 h-10" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
-                        <input className="border-1 border-black/10 rounded-xl p-2 w-full" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
+                <div className="flex gap-4">
+                    <div className="flex flex-col my-4 gap-2 flex-1/2">
+                        <label htmlFor="background-color">Background Color</label>
+                        <div className="flex gap-2">
+                            <input type="color" className="border-1 border-black/10 rounded-xl p-1 w-12 h-10" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
+                            <input className="border-1 border-black/10 rounded-xl p-2 w-full" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
+                        </div>
+                    </div>
+                    <div className="flex flex-col my-4 gap-2 flex-1/2">
+                        <label htmlFor="format">Output Format</label>
+                        <div className="flex gap-2">
+                            <Listbox value={qrConfig.format}
+                                onChange={(value) =>
+                                    setQrConfig((prev) => ({
+                                        ...prev,
+                                        format: value,
+                                    }))}>
+                                <ListboxButton
+                                    className={clsx(
+                                        'relative block w-full rounded-xl bg-white py-2 pr-8 pl-3 h-10 text-left text-sm text-black border border-black/10',
+                                        'focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                                    )}
+                                >
+                                    {qrConfig.format}
+                                    <ChevronDownIcon
+                                        className="pointer-events-none absolute top-2.5 right-2.5 size-4 text-gray-400"
+                                        aria-hidden="true"
+                                    />
+                                </ListboxButton>
+
+                                <ListboxOptions
+                                    anchor="bottom"
+                                    transition
+                                    className={clsx(
+                                        'w-(--button-width) rounded-xl border border-gray-200 bg-white p-1 shadow-lg [--anchor-gap:--spacing(1)] focus:outline-none',
+                                        'transition duration-100 ease-in data-leave:data-closed:opacity-0'
+                                    )}
+                                >
+                                    {formats.map((format) => (
+                                        <ListboxOption
+                                            key={format.id}
+                                            value={format.name}
+                                            className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-gray-100"
+                                        >
+                                            <CheckIcon className="invisible size-4 text-indigo-600 group-data-selected:visible" />
+                                            <div className="text-sm text-black">{format.name}</div>
+                                        </ListboxOption>
+                                    ))}
+                                </ListboxOptions>
+                            </Listbox>
+                        </div>
                     </div>
                 </div>
             </div>
