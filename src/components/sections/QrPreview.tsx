@@ -12,9 +12,11 @@ export default function QrPreview({
     handleDownload,
     onFormatChange
 }: QrPreviewProps) {
+
     const finalSizePx = qrModulesSize?.[0]
         ? (qrModulesSize[0] + 2 * qrConfig.borderSize) * qrConfig.scale
         : 0;
+
     return (
         <div className="rounded-xl shadow-2xl border-0 bg-white p-8 flex-1/2">
             <h3 className="font-semibold text-2xl">Preview</h3>

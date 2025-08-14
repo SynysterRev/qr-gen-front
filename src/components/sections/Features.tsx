@@ -1,87 +1,41 @@
 import Card from "../ui/Card";
+import { FEATURES, USE_CASES } from "@/lib/constants/qr";
 
 export default function Features() {
 
-    const useCases = [{
-        id: 1,
-        title: "Business Cards",
-        borderColor: "#bedbff",
-        backgroundColor: "#eff6ff",
-        titleColor: "text-blue-700",
-        description: "Add QR codes to business cards for instant contact sharing"
-    },
-    {
-        id: 2,
-        title: "Restaurant Menus",
-        borderColor: "#b9f8cf",
-        backgroundColor: "#f0fdf4",
-        titleColor: "text-green-700",
-        description: "Contactless dining with digital menu QR codes"
-    },
-    {
-        id: 3,
-        title: "Event Tickets",
-        borderColor: "#e9d4ff",
-        backgroundColor: "#faf5ff",
-        titleColor: "text-purple-700",
-        description: "Streamline event check-ins with secure QR tickets"
-    },
-    {
-        id: 4,
-        title: "Marketing Campaigns",
-        borderColor: "#ffd6a8",
-        backgroundColor: "#fff7ed",
-        titleColor: "text-orange-700",
-        description: "Track engagement and drive traffic with branded QR codes"
-    },
-    ]
-
-    const features = [{
-        id: 1,
-        title: "Custom Design",
-        borderColor: "#8200db",
-        description: "Customize colors, add logos, and create branded QR codes that match your style.",
-        icon: (
-            <>
-                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
-                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
-                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
-                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
-            </>
-        ),
-        iconColor: "text-purple-600"
-    },
-    {
-        id: 2,
-        title: "Advanced Analytics",
-        borderColor: "#2b7fff",
-        description: "Track scans, locations, devices, and get detailed insights into your QR code performance.",
-        icon: (
-            <>
-                <path d="M3 3v18h18"></path>
-                <path d="M18 17V9"></path>
-                <path d="M13 17V5"></path>
-                <path d="M8 17v-3"></path>
-            </>
-        ),
-        iconColor: "text-blue-600"
-    },
-    {
-        id: 3,
-        title: "Multiple Formats",
-        borderColor: "#f6339a",
-        description: "Download in PNG, SVG, PDF, or EPS formats for any use case.",
-        icon: (
-            <>
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" x2="12" y1="15" y2="3"></line>
-            </>
-        ),
-        iconColor: "text-pink-600"
-    },
-    ]
+    function renderIcon(type: string) {
+        switch (type) {
+            case "dots":
+                return (
+                    <>
+                        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" > </circle>
+                        < circle cx="17.5" cy="10.5" r=".5" fill="currentColor" > </circle>
+                        < circle cx="8.5" cy="7.5" r=".5" fill="currentColor" > </circle>
+                        < circle cx="6.5" cy="12.5" r=".5" fill="currentColor" > </circle>
+                        < path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" > </path>
+                    </>
+                );
+            case "chart":
+                return (
+                    <>
+                        <path d="M3 3v18h18" > </path>
+                        < path d="M18 17V9" > </path>
+                        < path d="M13 17V5" > </path>
+                        < path d="M8 17v-3" > </path>
+                    </>
+                );
+            case "download":
+                return (
+                    <>
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" > </path>
+                        < polyline points="7 10 12 15 17 10" > </polyline>
+                        < line x1="12" x2="12" y1="15" y2="3" > </line>
+                    </>
+                )
+            default:
+                return null;
+        }
+    }
 
     return (
         <section className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 py-8">
@@ -94,7 +48,7 @@ export default function Features() {
                 <h3 className="text-xl md:text-2xl font-bold mb-4">Perfect for Every Use Case</h3>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">From small businesses to enterprise solutions, QRCraft adapts to your needs.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {useCases.map((useCase) => {
+                    {USE_CASES.map((useCase) => {
                         return (
                             <Card key={useCase.id} backgroundColor={useCase.backgroundColor} borderColor={useCase.borderColor} className="border-1 p-6 hover:shadow-lg transition-shadow">
                                 <h4 className={`font-semibold leading-none ${useCase.titleColor}`}>{useCase.title}</h4>
@@ -104,11 +58,11 @@ export default function Features() {
                     })}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-16">
-                    {features.map((feature) => {
+                    {FEATURES.map((feature) => {
                         return (
                             <Card key={feature.id} borderColor={feature.borderColor} className="border-l-4 p-6 hover:shadow-lg transition-shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-palette h-8 w-8 mb-2 ${feature.iconColor}`}>
-                                    {feature.icon}
+                                    {renderIcon(feature.iconType)}
                                 </svg>
                                 <h4 className="font-semibold leading-none">{feature.title}</h4>
                                 <p className="text-muted-foreground text-sm p-0">{feature.description}</p>
