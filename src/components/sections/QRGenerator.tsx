@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import Slider from "./Slider";
+import Slider from "../ui/Slider";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from 'clsx'
@@ -13,7 +15,17 @@ const formats = [
 ];
 
 export default function QrGenerator() {
-    const [qrConfig, setQrConfig] = useState({
+
+    interface QrConfig {
+        text: string;
+        fillColor: string;
+        backgroundColor: string;
+        scale: number;
+        borderSize: number;
+        format: string;
+    }
+
+    const [qrConfig, setQrConfig] = useState<QrConfig>({
         text: "https://qrcraft.app",
         fillColor: "#8B5CF6",
         backgroundColor: "#ffffff",
@@ -23,11 +35,11 @@ export default function QrGenerator() {
     });
 
 
-    const [qrPreviewUrl, setQrPreviewUrl] = useState(null);
-    const [qrModulesSize, setQrModulesSize] = useState(null);
+    const [qrPreviewUrl, setQrPreviewUrl] = useState<string | null>(null);
+    const [qrModulesSize, setQrModulesSize] = useState<number[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    async function generateQrCode(config) {
+    async function generateQrCode(config: QrConfig) {
         setIsLoading(true);
         const requestData = {
             url: config.text,
@@ -79,7 +91,7 @@ export default function QrGenerator() {
         }
     }, [qrConfig, debouncedUpdate]);
 
-    function handleInputChange(e) {
+    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { value, name } = e.currentTarget;
         setQrConfig(prevQrConfig => ({
             ...prevQrConfig,
@@ -87,7 +99,7 @@ export default function QrGenerator() {
         }));
     }
 
-    function handleSliderChange(name, value) {
+    function handleSliderChange(name: string, value: number) {
         setQrConfig(prevQrConfig => ({
             ...prevQrConfig,
             [name]: value
@@ -133,7 +145,7 @@ export default function QrGenerator() {
         }
     }
 
-    const finalSizePx = (qrModulesSize && qrModulesSize.length > 0)
+    const finalSizePx = qrModulesSize?.[0]
         ? (qrModulesSize[0] + 2 * qrConfig.borderSize) * qrConfig.scale
         : 0;
     return (
@@ -153,6 +165,7 @@ export default function QrGenerator() {
                             max={10}
                             onChange={(value) => handleSliderChange("borderSize", value)}
                             color="#8B5CF6"
+                            name="borderSize"
                         />
                     </div>
                     <div className="flex flex-col my-4 gap-2 flex-1/2">
@@ -172,6 +185,7 @@ export default function QrGenerator() {
                         max={20}
                         onChange={(value) => handleSliderChange("scale", value)}
                         color="#8B5CF6"
+                        name="scale"
                     />
                 </div>
                 <div className="flex flex-col my-4 gap-2">
