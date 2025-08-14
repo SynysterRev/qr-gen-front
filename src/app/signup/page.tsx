@@ -1,29 +1,52 @@
-import Card from "../components/Card";
+"use client"
+
+import Card from "../../components/ui/Card";
 import { useState } from "react";
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const [form, setForm] = useState({
+    interface Form {
+        email: string;
+        password: string;
+        confirmPassword: string;
+        terms: boolean;
+    }
+
+    const [form, setForm] = useState<Form>({
         email: "",
         password: "",
         confirmPassword: "",
         terms: false
     });
 
-    const [errors, setErrors] = useState({});
+    interface Errors {
+        email: string;
+        password: string;
+        confirmPassword: string;
+        terms: boolean;
+    }
 
-    const validateField = (name, value) => {
+    const [errors, setErrors] = useState<Errors>({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        terms: false
+    });
+
+    const validateField = (name: string, value: string | boolean) => {
         let error = "";
         switch (name) {
             case "email":
+                if (typeof value !== 'string') break;
                 if (!value) error = "Please enter a valid email";
                 else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
                     error = "Please enter a valid email";
                 break;
 
             case "password":
+                if (typeof value !== 'string') break;
                 if (!value) {
                     error = "Please enter a password";
                 } else {
@@ -44,6 +67,7 @@ export default function SignUp() {
                 break;
 
             case "confirmPassword":
+                if (typeof value !== 'string') break;
                 if (!value) error = "Please confirm your password";
                 else if (value !== form.password)
                     error = "Passwords do not match";
@@ -59,7 +83,7 @@ export default function SignUp() {
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         const { name, value, type, checked } = e.target;
         setForm((prev) => ({
             ...prev,
@@ -67,15 +91,15 @@ export default function SignUp() {
         }));
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = (e: any) => {
         const { name, value, type, checked } = e.target;
         validateField(name, type === "checkbox" ? checked : value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         Object.keys(form).forEach((field) =>
-            validateField(field, form[field])
+            validateField(field as keyof Form, form[field as keyof Form])
         );
         if (Object.values(errors).every((err) => !err)) {
             console.log("Formulaire valide :", form);

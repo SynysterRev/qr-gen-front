@@ -1,8 +1,8 @@
-import Hero from "../components/Hero";
-import QrGenerator from "../components/QRGenerator";
-import Features from "../components/Features";
-import Started from "../components/Started";
-import Header from "../components/Header";
+import Hero from "@/components/sections/Hero";
+import QrGenerator from "@/components/sections/QRGenerator";
+import Features from "@/components/sections/Features";
+import Started from "@/components/sections/Started";
+import Header from "@/components/layout/Header";
 
 export default function Home() {
     return (
