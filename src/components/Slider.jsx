@@ -1,9 +1,7 @@
-import React from 'react';
-
 const Slider = ({ label, value, min, max, onChange, color, name }) => {
     return (
         <div className="flex flex-col items-start gap-2">
-            <label htmlFor={`slider-${label.replace(/\s/g, '-')}`} className="text-gray-700 mb-2">
+            <label htmlFor={`slider-${label.replace(/\s/g, '-')}`} className="text-gray-700 mb-4">
                 {label}: {value}
             </label>
             <input

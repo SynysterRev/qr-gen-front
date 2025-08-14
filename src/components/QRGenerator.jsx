@@ -4,6 +4,7 @@ import Slider from "./Slider";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from 'clsx'
+import toast from 'react-hot-toast';
 
 const formats = [
     { id: 1, name: "PNG" },
@@ -18,7 +19,7 @@ export default function QrGenerator() {
         backgroundColor: "#ffffff",
         scale: 10,
         borderSize: 2,
-        format: formats[0].name
+        format: formats[1].name
     });
 
 
@@ -26,7 +27,7 @@ export default function QrGenerator() {
     const [qrModulesSize, setQrModulesSize] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    function generateQrCode(config) {
+    async function generateQrCode(config) {
         setIsLoading(true);
         const requestData = {
             url: config.text,
@@ -36,30 +37,32 @@ export default function QrGenerator() {
                 scale: config.scale,
                 border: config.borderSize,
             },
-            format: config.format
+            format: formats[1].name
         };
-        fetch("http://127.0.0.1:8000/qr/preview", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData)
-        })
-            .then(res => res.json())
-            .then(data => {
-                const { qr_base64, qr_modules_size } = data;
-                const previewUrl = `data:image/svg+xml;base64,${qr_base64}`;
-                setQrPreviewUrl(previewUrl);
-                setQrModulesSize(qr_modules_size);
-            })
-            .catch(error => {
-                console.error("Erreur lors de la génération du QR code:", error);
-                setQrPreviewUrl(null);
-                setQrModulesSize(null);
-            })
-            .finally(() => {
-                setIsLoading(false);
+        try {
+            const response = await fetch("http://127.0.0.1:8000/qr/preview", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
             });
+
+            if (!response.ok) {
+                throw new Error('Preview failed');
+            }
+
+            const data = await response.json();
+            const { qr_base64, qr_modules_size } = data;
+            const previewUrl = `data:image/svg+xml;base64,${qr_base64}`;
+            setQrPreviewUrl(previewUrl);
+            setQrModulesSize(qr_modules_size);
+            setIsLoading(false);
+        }
+        catch (error) {
+            console.error('Error preview:', error);
+            toast.error('Preview failed, please try again.');
+        }
     }
 
     const debouncedUpdate = useDebouncedCallback(
@@ -91,13 +94,43 @@ export default function QrGenerator() {
         }));
     }
 
-    function handleDownload() {
-        const link = document.createElement('a');
-        link.href = qrPreviewUrl;
-        link.download = `qrcode-${Date.now()}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    async function handleDownload() {
+        const requestData = {
+            url: qrConfig.text,
+            customization: {
+                dark: qrConfig.fillColor,
+                light: qrConfig.backgroundColor,
+                scale: qrConfig.scale,
+                border: qrConfig.borderSize,
+            },
+            format: qrConfig.format.toLocaleLowerCase()
+        };
+        try {
+            const response = await fetch("http://127.0.0.1:8000/qr/download", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Download failed');
+            }
+
+            const blob = await response.blob();
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `qrcode.${qrConfig.format}`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error('Error download:', error);
+            toast.error('Download failed, please try again.');
+        }
     }
 
     const finalSizePx = (qrModulesSize && qrModulesSize.length > 0)
@@ -125,6 +158,7 @@ export default function QrGenerator() {
                     <div className="flex flex-col my-4 gap-2 flex-1/2">
                         <label htmlFor="url">QR Color</label>
                         <div className="flex gap-2">
+                            {/* change input color to something a bit more friendly */}
                             <input type="color" className="border-1 border-black/10 rounded-xl p-1 w-12 h-10" value={qrConfig.fillColor} onChange={handleInputChange} name="fillColor"></input>
                             <input className="border-1 border-black/10 rounded-xl p-2" value={qrConfig.fillColor} onChange={handleInputChange} name="fillColor"></input>
                         </div>
@@ -140,15 +174,33 @@ export default function QrGenerator() {
                         color="#8B5CF6"
                     />
                 </div>
-                <div className="flex gap-4">
-                    <div className="flex flex-col my-4 gap-2 flex-1/2">
-                        <label htmlFor="background-color">Background Color</label>
-                        <div className="flex gap-2">
-                            <input type="color" className="border-1 border-black/10 rounded-xl p-1 w-12 h-10" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
-                            <input className="border-1 border-black/10 rounded-xl p-2 w-full" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
-                        </div>
+                <div className="flex flex-col my-4 gap-2">
+                    <label htmlFor="background-color">Background Color</label>
+                    <div className="flex gap-2">
+                        <input type="color" className="border-1 border-black/10 rounded-xl p-1 w-12 h-10" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
+                        <input className="border-1 border-black/10 rounded-xl p-2 w-full" value={qrConfig.backgroundColor} onChange={handleInputChange} name="backgroundColor"></input>
                     </div>
-                    <div className="flex flex-col my-4 gap-2 flex-1/2">
+                </div>
+            </div>
+            <div className="rounded-xl shadow-2xl border-0 bg-white p-8 flex-1/2">
+                <h3 className="font-semibold text-2xl">Preview</h3>
+                <div className="flex justify-center items-center animate-float h-[400px]">
+                    {isLoading && <div className="spinner">Loading...</div>}
+                    {!isLoading && qrPreviewUrl && (
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">
+                            <img
+                                src={qrPreviewUrl}
+                                alt="qr preview"
+                                className="w-full h-full object-contain"
+                            />
+                            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                {finalSizePx}×{finalSizePx}px
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div className="flex justify-center items-end gap-4">
+                    <div className="flex flex-col gap-2">
                         <label htmlFor="format">Output Format</label>
                         <div className="flex gap-2">
                             <Listbox value={qrConfig.format}
@@ -156,7 +208,8 @@ export default function QrGenerator() {
                                     setQrConfig((prev) => ({
                                         ...prev,
                                         format: value,
-                                    }))}>
+                                    }))}
+                                name="format">
                                 <ListboxButton
                                     className={clsx(
                                         'relative block w-full rounded-xl bg-white py-2 pr-8 pl-3 h-10 text-left text-sm text-black border border-black/10',
@@ -192,27 +245,7 @@ export default function QrGenerator() {
                             </Listbox>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div className="rounded-xl shadow-2xl border-0 bg-white p-8 flex-1/2">
-                <h3 className="font-semibold text-2xl">Preview</h3>
-                <div className="flex justify-center items-center animate-float h-[400px]">
-                    {isLoading && <div className="spinner">Loading...</div>}
-                    {!isLoading && qrPreviewUrl && (
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">
-                            <img
-                                src={qrPreviewUrl}
-                                alt="qr preview"
-                                className="w-full h-full object-contain"
-                            />
-                            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                                {finalSizePx}×{finalSizePx}px
-                            </div>
-                        </div>
-                    )}
-                </div>
-                <div className="flex justify-center">
-                    <button onClick={handleDownload} className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20">Download</button>
+                    <button onClick={handleDownload} className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20 h-10">Download</button>
                 </div>
             </div>
         </div>
