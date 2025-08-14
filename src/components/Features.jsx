@@ -96,7 +96,7 @@ export default function Features() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {useCases.map((useCase) => {
                         return (
-                            <Card key={useCase.id} backgroundColor={useCase.backgroundColor} borderColor={useCase.borderColor} className="border-1">
+                            <Card key={useCase.id} backgroundColor={useCase.backgroundColor} borderColor={useCase.borderColor} className="border-1 p-6 hover:shadow-lg transition-shadow">
                                 <h4 className={`font-semibold leading-none ${useCase.titleColor}`}>{useCase.title}</h4>
                                 <p className="text-muted-foreground text-sm">{useCase.description}</p>
                             </Card>
@@ -106,7 +106,7 @@ export default function Features() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-16">
                     {features.map((feature) => {
                         return (
-                            <Card key={feature.id} borderColor={feature.borderColor} className="border-l-4">
+                            <Card key={feature.id} borderColor={feature.borderColor} className="border-l-4 p-6 hover:shadow-lg transition-shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-palette h-8 w-8 mb-2 ${feature.iconColor}`}>
                                     {feature.icon}
                                 </svg>
