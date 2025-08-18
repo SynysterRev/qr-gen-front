@@ -1,11 +1,11 @@
-import { UserCreate, UserLogin } from "../types/user";
+import { UserLogin } from "../types/user";
 
-const apiURL = "http://127.0.0.1:8000/api/users/"
+const apiURL = "http://127.0.0.1:8000/api/login/"
 
-export async function createUser(newUser: UserCreate) {
+export async function loginUser(user: UserLogin) {
     const requestData = {
-        email: newUser.email,
-        password: newUser.password
+        email: user.email,
+        password: user.password
     }
 
     const response = await fetch(
@@ -27,7 +27,7 @@ export async function createUser(newUser: UserCreate) {
             errorData = { detail: 'Unknown error' };
         }
 
-        const error = new Error(errorData.detail || 'User creation failed');
+        const error = new Error(errorData.detail || 'Connexion failed');
         (error as any).status = response.status;
         (error as any).data = errorData;
         throw error;

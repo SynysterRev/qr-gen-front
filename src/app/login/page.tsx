@@ -1,10 +1,11 @@
 "use client"
 
+import SignInForm from "@/components/forms/SignInForm";
 import Card from "../../components/ui/Card";
-import SignUpForm from "@/components/forms/SignUpForm";
 import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 
-export default function SignUp() {
+export default function Login() {
 
 
     return (
@@ -12,12 +13,12 @@ export default function SignUp() {
             <div className="pt-16 flex justify-center">
                 <div className=" max-w-md w-full">
                     <Link className="text-3xl" href="/"><span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent font-bold">QRForge</span></Link>
-                    <h1 className="text-3xl font-bold tracking-tight mt-6 mb-2">Create your account</h1>
-                    <p className="text-muted-foreground text-lg mb-10">Join to create amazing QR codes.</p>
+                    <h1 className="text-3xl font-bold tracking-tight mt-6 mb-2">Welcome back</h1>
+                    <p className="text-muted-foreground text-lg mb-10">Sign in to your account to continue creating amazing QR codes.</p>
                     <Card className="py-8">
                         <div className="text-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex flex-col">
-                            <h3 className="font-semibold text-2xl mb-2">Sign Up</h3>
-                            <p className="text-muted-foreground">Create your account to get started with QRForge.</p>
+                            <h3 className="font-semibold text-2xl mb-2">Sign In</h3>
+                            <p className="text-muted-foreground">Enter your email and password to access your account.</p>
                         </div>
                         <div className="space-y-6 mt-8 p-6">
                             <div className="space-y-3">
@@ -48,16 +49,16 @@ export default function SignUp() {
                                 <span className="px-3 text-xs">OR CONTINUE WITH EMAIL</span>
                                 <div className="flex-1 border-t border-gray-300"></div>
                             </div>
-                            <SignUpForm />
+                            <SignInForm />
 
                         </div>
                         <div className="text-center text-sm">
-                            <span className="text-muted-foreground">Already have an account? </span>
-                            <a href="/login" className="text-purple-600 hover:text-purple-500 font-medium">Sign in</a>
+                            <span className="text-muted-foreground">Don't have an account? </span>
+                            <a href="/signup" className="text-purple-600 hover:text-purple-500 font-medium">Sign up</a>
                         </div>
                     </Card>
                     <div className="text-center mt-8 text-sm text-muted-foreground">
-                        <p>By creating an account, you agree to our
+                        <p>By signing in, you agree to our
                             <Link href="/terms" className="text-purple-600 hover:text-purple-500"> Terms of Service</Link> and
                             <Link href="/privacy" className="text-purple-600 hover:text-purple-500"> Privacy Policy</Link>
                         </p>

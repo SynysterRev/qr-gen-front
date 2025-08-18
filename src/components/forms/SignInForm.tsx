@@ -1,9 +1,9 @@
 "use client";
 
-import useSignUpForm from "@/hooks/useSignUpForm";
 import PasswordInput from "../ui/PasswordInput";
 import EmailInput from "../ui/EmailInput";
 import Link from "next/link";
+import useSignInForm from "@/hooks/useSignInForm";
 
 export default function SignUpForm() {
     const {
@@ -12,7 +12,7 @@ export default function SignUpForm() {
         handleChange,
         handleBlur,
         handleSubmit
-    } = useSignUpForm();
+    } = useSignInForm();
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -29,42 +29,24 @@ export default function SignUpForm() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.password}
-                placeholder="Create a password"
+                placeholder="Enter your password"
             />
-            <PasswordInput
-                label="Confirm Password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.confirmPassword}
-                placeholder="Confirm your password"
-            />
-            <div className="space-y-2 flex flex-col">
+            <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 font-semibold">
                     <input
                         type="checkbox"
-                        id="terms"
+                        id="remember"
                         className="h-4 w-4"
-                        required
-                        name="terms"
-                        checked={form.terms}
+                        name="remember"
+                        checked={form.remember}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                     />
-                    <label htmlFor="terms" className="text-md">
-                        I agree to the
-                        <Link href="/terms" className="text-purple-600 hover:text-purple-500"> Terms of Service </Link>
-                        and
-                        <Link href="/privacy" className="text-purple-600 hover:text-purple-500"> Privacy Policy</Link>
-                    </label>
+                    <label htmlFor="remember" className="text-md">Remember me</label>
                 </div>
-                {errors.terms && <span className="text-red-500 text-sm">{errors.terms}</span>}
+                <Link href="/" className="text-purple-600 hover:text-purple-500"> Forgot password? </Link>
             </div>
             <button type="submit" className="w-full text-center rounded-xl h-10 text-white font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 cursor-pointer">
-                Create Account
+                Sign In
             </button>
         </form>
     )

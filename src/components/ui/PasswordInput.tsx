@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { ChangeEventHandler, FocusEventHandler } from "react";
 
-export interface PasswordInputData {
+interface PasswordInputData {
     label: string;
     name: string;
     value: string;
     placeholder: string;
-    onChange: ChangeEventHandler<HTMLInputElement>;
-    onBlur: FocusEventHandler<HTMLInputElement>,
-    error: string
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+    onBlur?: FocusEventHandler<HTMLInputElement>,
+    error?: string
 }
 
 export default function PasswordInput({
