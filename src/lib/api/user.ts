@@ -20,7 +20,17 @@ export async function createUser(newUser: UserCreate) {
     );
 
     if (!response.ok) {
-        throw new Error('User creation failed');
+        let errorData;
+        try {
+            errorData = await response.json();
+        } catch {
+            errorData = { detail: 'Unknown error' };
+        }
+
+        const error = new Error(errorData.detail || 'User creation failed');
+        (error as any).status = response.status;
+        (error as any).data = errorData;
+        throw error;
     }
 
     return response.json();
