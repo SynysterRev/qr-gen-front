@@ -3,6 +3,7 @@
 import QrCustomizer from "@/components/sections/QrCustomizer";
 import useQrGenerator from "@/hooks/useQrGenerator";
 import QrPreview from "./QrPreview";
+import { Toaster } from "react-hot-toast";
 
 export default function QrGenerator() {
     const {
@@ -30,6 +31,9 @@ export default function QrGenerator() {
                 qrConfig={qrConfig}
                 qrModulesSize={qrModulesSize}
                 qrPreviewUrl={qrPreviewUrl}
+            />
+            <Toaster
+                position="bottom-center"
             />
         </div>
     );

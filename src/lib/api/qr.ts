@@ -12,7 +12,7 @@ export async function fetchQrPreview(config: QrConfig) {
         },
         format: FORMATS[1].name
     };
-    const response = await fetch("http://127.0.0.1:8000/qr/preview", {
+    const response = await fetch("http://127.0.0.1:8000/api/qr/preview", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export async function downloadQr(config: QrConfig) {
         },
         format: config.format.toLocaleLowerCase()
     };
-    const response = await fetch("http://127.0.0.1:8000/qr/download", {
+    const response = await fetch("http://127.0.0.1:8000/api/qr/download", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',

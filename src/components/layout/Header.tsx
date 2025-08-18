@@ -6,7 +6,7 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <a className="flex">
-                        <span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent font-bold text-3xl">Title</span>
+                        <span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent font-bold text-3xl leading-snug">QRForge</span>
                     </a>
                     <nav className="flex gap-2">
                         <Link className="transition-all duration-300 rounded-full hover:border-border/50 hover:bg-border py-2 px-6" href="">Pricing</Link>

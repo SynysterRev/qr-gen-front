@@ -6,6 +6,7 @@ export default function QrCustomizer({
     onChangeInput,
     onChangeSlider
 }: QrCustomizerProps) {
+
     return (
         <div className="rounded-xl shadow-2xl border-0 bg-white p-8 flex-1/2">
             <h3 className="font-semibold text-2xl">Customize Your QR Code</h3>

@@ -46,7 +46,7 @@ export default function Features() {
                 </h2>
                 <p className="text-muted-foreground text-xl max-w-3xl mx-auto mb-10">From basic QR codes to advanced analytics, we've got everything you need to create, customize, and track your QR codes.</p>
                 <h3 className="text-xl md:text-2xl font-bold mb-4">Perfect for Every Use Case</h3>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">From small businesses to enterprise solutions, QRCraft adapts to your needs.</p>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">From small businesses to enterprise solutions, QRForge adapts to your needs.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {USE_CASES.map((useCase) => {
                         return (

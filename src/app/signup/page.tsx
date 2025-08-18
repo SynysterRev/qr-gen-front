@@ -1,123 +1,24 @@
 "use client"
 
+import useSignUpForm from "@/hooks/useSignUpForm";
 import Card from "../../components/ui/Card";
 import { useState } from "react";
+import SignUpForm from "@/components/forms/SignUpForm";
 
 export default function SignUp() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    interface Form {
-        email: string;
-        password: string;
-        confirmPassword: string;
-        terms: boolean;
-    }
-
-    const [form, setForm] = useState<Form>({
-        email: "",
-        password: "",
-        confirmPassword: "",
-        terms: false
-    });
-
-    interface Errors {
-        email: string;
-        password: string;
-        confirmPassword: string;
-        terms: boolean;
-    }
-
-    const [errors, setErrors] = useState<Errors>({
-        email: "",
-        password: "",
-        confirmPassword: "",
-        terms: false
-    });
-
-    const validateField = (name: string, value: string | boolean) => {
-        let error = "";
-        switch (name) {
-            case "email":
-                if (typeof value !== 'string') break;
-                if (!value) error = "Please enter a valid email";
-                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-                    error = "Please enter a valid email";
-                break;
-
-            case "password":
-                if (typeof value !== 'string') break;
-                if (!value) {
-                    error = "Please enter a password";
-                } else {
-                    const errorsList = [];
-                    if (value.length < 8)
-                        errorsList.push("• Must contain at least 8 characters");
-                    if (!/[0-9]/.test(value))
-                        errorsList.push("• Must contain at least one digit");
-                    if (!/[a-z]/.test(value))
-                        errorsList.push("• Must contain at least one lowercase letter");
-                    if (!/[A-Z]/.test(value))
-                        errorsList.push("• Must contain at least one uppercase letter");
-                    if (!/[\W_]/.test(value))
-                        errorsList.push("• Must contain at least one special character");
-
-                    error = errorsList.join("\n");
-                }
-                break;
-
-            case "confirmPassword":
-                if (typeof value !== 'string') break;
-                if (!value) error = "Please confirm your password";
-                else if (value !== form.password)
-                    error = "Passwords do not match";
-                break;
-
-            case "terms":
-                if (!value) error = "You must accept the conditions";
-                break;
-
-            default:
-                break;
-        }
-        setErrors((prev) => ({ ...prev, [name]: error }));
-    };
-
-    const handleChange = (e: any) => {
-        const { name, value, type, checked } = e.target;
-        setForm((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value
-        }));
-    };
-
-    const handleBlur = (e: any) => {
-        const { name, value, type, checked } = e.target;
-        validateField(name, type === "checkbox" ? checked : value);
-    };
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        Object.keys(form).forEach((field) =>
-            validateField(field as keyof Form, form[field as keyof Form])
-        );
-        if (Object.values(errors).every((err) => !err)) {
-            console.log("Formulaire valide :", form);
-            // createAccount(form) — si tu veux appeler ta fonction backend
-        }
-    };
 
     return (
         <>
             <div className="pt-16 flex justify-center">
                 <div className=" max-w-md w-full">
-                    <a className="text-3xl"><span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent font-bold">Title</span></a>
+                    <a className="text-3xl"><span className="bg-gradient-to-r from-blue-600 via-primary to-pink-600 bg-clip-text text-transparent font-bold">QRForge</span></a>
                     <h1 className="text-3xl font-bold tracking-tight mt-6 mb-2">Create your account</h1>
                     <p className="text-muted-foreground text-lg mb-10">Join to create amazing QR codes.</p>
                     <Card className="py-8">
                         <div className="text-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex flex-col">
                             <h3 className="font-semibold text-2xl mb-2">Sign Up</h3>
-                            <p className="text-muted-foreground">Create your account to get started with title.</p>
+                            <p className="text-muted-foreground">Create your account to get started with QRForge.</p>
                         </div>
                         <div className="space-y-6 mt-8 p-6">
                             <div className="space-y-3">
@@ -148,132 +49,8 @@ export default function SignUp() {
                                 <span className="px-3 text-xs">OR CONTINUE WITH EMAIL</span>
                                 <div className="flex-1 border-t border-gray-300"></div>
                             </div>
+                            <SignUpForm />
 
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <div className="space-y-2 flex flex-col">
-                                    <label htmlFor="email">Email</label>
-                                    <div className="relative">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail absolute left-3 top-3.5 h-4 w-4 text-muted-foreground">
-                                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                        </svg>
-                                        <input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            className="border border-gray-50 rounded-xl w-full h-10 pl-10 shadow-sm"
-                                            placeholder="Enter your email"
-                                            value={form.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            required
-                                        />
-                                    </div>
-                                    {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
-                                </div>
-
-                                <div className="space-y-2 flex flex-col">
-                                    <label htmlFor="password">Password</label>
-                                    <div className="relative">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock absolute left-3 top-3.5 h-4 w-4 text-muted-foreground">
-                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                        </svg>
-                                        <input
-                                            id="password"
-                                            name="password"
-                                            type={showPassword ? "text" : "password"}
-                                            className="border border-gray-50 rounded-xl w-full h-10 pl-10 shadow-sm"
-                                            placeholder="Create a password"
-                                            value={form.password}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            required
-                                        />
-                                        <button
-                                            className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all absolute right-0 top-0 mx-1 my-1 p-2 rounded-full cursor-pointer hover:bg-gray-100"
-                                            type="button"
-                                            onClick={() => setShowPassword(prev => !prev)}
-                                            aria-label={showPassword ? "Hide password" : "Show password"}>
-                                            {showPassword ? (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-7 0-10-7-10-7a17.45 17.45 0 013.414-4.765M6.9 6.9A9.967 9.967 0 0112 5c7 0 10 7 10 7a17.467 17.467 0 01-2.892 4.148M3 3l18 18" />
-                                                </svg>
-                                            ) : (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                                                    <circle cx="12" cy="12" r="3" />
-                                                </svg>
-                                            )}
-                                        </button>
-                                    </div>
-                                    {errors.password && (
-                                        <div className="text-red-500 text-sm" style={{ whiteSpace: "pre-line" }}>{errors.password}</div>
-                                    )}
-                                </div>
-
-                                <div className="space-y-2 flex flex-col">
-                                    <label htmlFor="confirmPassword">Confirm Password</label>
-                                    <div className="relative">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock absolute left-3 top-3.5 h-4 w-4 text-muted-foreground">
-                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                        </svg>
-                                        <input
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            type={showConfirmPassword ? "text" : "password"}
-                                            className="border border-gray-50 rounded-xl w-full h-10 pl-10 shadow-sm"
-                                            placeholder="Confirm your password"
-                                            value={form.confirmPassword}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            required
-                                        />
-                                        <button
-                                            className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all absolute right-0 top-0 mx-1 my-1 p-2 rounded-full cursor-pointer hover:bg-gray-100"
-                                            type="button"
-                                            onClick={() => setShowConfirmPassword(prev => !prev)}
-                                            aria-label={showConfirmPassword ? "Hide password" : "Show password"}>
-                                            {showConfirmPassword ? (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-7 0-10-7-10-7a17.45 17.45 0 013.414-4.765M6.9 6.9A9.967 9.967 0 0112 5c7 0 10 7 10 7a17.467 17.467 0 01-2.892 4.148M3 3l18 18" />
-                                                </svg>
-                                            ) : (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                                                    <circle cx="12" cy="12" r="3" />
-                                                </svg>
-                                            )}
-                                        </button>
-                                    </div>
-                                    {errors.confirmPassword && <span className="text-red-500 text-sm">{errors.confirmPassword}</span>}
-                                </div>
-                                <div className="space-y-2 flex flex-col">
-                                    <div className="flex items-center space-x-2 font-semibold">
-                                        <input
-                                            type="checkbox"
-                                            id="terms"
-                                            className="h-4 w-4"
-                                            required
-                                            name="terms"
-                                            checked={form.terms}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <label htmlFor="terms" className="text-md">
-                                            I agree to the
-                                            <a href="/terms" className="text-purple-600 hover:text-purple-500"> Terms of Service </a>
-                                            and
-                                            <a href="/privacy" className="text-purple-600 hover:text-purple-500"> Privacy Policy</a>
-                                        </label>
-                                    </div>
-                                    {errors.terms && <span className="text-red-500 text-sm">{errors.terms}</span>}
-                                </div>
-                                <button type="submit" className="w-full text-center rounded-xl h-10 text-white font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 cursor-pointer">
-                                    Create Account
-                                </button>
-                            </form>
                         </div>
                         <div className="text-center text-sm">
                             <span className="text-muted-foreground">Already have an account? </span>
