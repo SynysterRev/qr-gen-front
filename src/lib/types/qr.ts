@@ -23,3 +23,13 @@ export interface QrPreviewProps {
     handleDownload: MouseEventHandler<HTMLButtonElement>,
     onFormatChange: (value: string) => void
 }
+
+export interface QrResponse {
+    id: string;
+    title: string;
+    userId: string;
+    url: string;
+    scanCount: number;
+    isDynamic: boolean;
+    createdAt: Date;
+}

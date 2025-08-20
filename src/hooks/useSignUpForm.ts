@@ -1,6 +1,6 @@
 "use client";
 
-import { createUser } from "@/lib/api/user";
+import { createUser } from "@/lib/services/userService";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
@@ -117,7 +117,6 @@ export default function useSignUpForm() {
                 // }, 1500);
             } catch (error: any) {
                 console.error('Error user creation:', error);
-                console.log(error.response?.status);
                 if (error.status === 400 &&
                     error.data?.detail === "This email is already used.") {
 

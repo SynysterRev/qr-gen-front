@@ -1,6 +1,6 @@
 "use client";
 
-import { downloadQr, fetchQrPreview } from "@/lib/api/qr";
+import { downloadQr, fetchQrPreview } from "@/lib/services/qrService";
 import { DEFAULT_QR_CONFIG } from "@/lib/constants/qr";
 import { QrConfig } from "@/lib/types/qr";
 import { useEffect, useState } from "react";

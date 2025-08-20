@@ -7,7 +7,10 @@ const useLocalStorage = <T>(
     const [state, setState] = useState<T>(() => {
         try {
             const item = localStorage.getItem(key);
-            return item ? JSON.parse(item) : initialValue;
+            if (item && item !== "undefined" && item !== "null") {
+                return JSON.parse(item);
+            }
+            return initialValue;
         } catch {
             return initialValue;
         }
@@ -15,7 +18,7 @@ const useLocalStorage = <T>(
 
     useEffect(() => {
         try {
-            if (state !== undefined) {
+            if (state !== undefined && state !== null) {
                 localStorage.setItem(key, JSON.stringify(state));
             } else {
                 localStorage.removeItem(key);

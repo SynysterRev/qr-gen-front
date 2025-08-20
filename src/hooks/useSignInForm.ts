@@ -1,11 +1,12 @@
 "use client";
 
-import { createUser } from "@/lib/api/user";
+import { createUser } from "@/lib/services/userService";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
-import { loginUser } from "@/lib/api/auth";
+import { loginUser } from "@/lib/services/authService";
 import useLocalStorage from "./useLocalStorage";
+import { UserResponse } from "@/lib/types/user";
 
 export default function useSignInForm() {
 
@@ -33,7 +34,7 @@ export default function useSignInForm() {
     const [
         user,
         setUser
-    ] = useLocalStorage("current_user", null);
+    ] = useLocalStorage<UserResponse | null>("current_user", null);
 
     const validateField = (value: string) => {
         let error = "";

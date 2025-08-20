@@ -2,10 +2,27 @@
 
 import { Check } from 'lucide-react';
 import QrListElement from './QrListElement';
-import { useState } from 'react';
+import { useSelection } from '@/hooks/useSelection';
+import useUserQrs from '@/hooks/useUserQrs';
 
 export default function QrCodeList() {
-    const [checked, setChecked] = useState(false);
+
+    const {
+        qrs,
+        loading,
+        error,
+        refetch
+    } = useUserQrs();
+
+    const {
+        selectAll,
+        selectedCount,
+        toggleSelectAll,
+        toggleItem,
+        isSelected,
+        getSelectedItems,
+        clearSelection
+    } = useSelection(qrs);
 
     return (
         <table className="w-full text-sm">
@@ -16,11 +33,11 @@ export default function QrCodeList() {
                             <input
                                 id="check-all-qr"
                                 type="checkbox"
-                                className="appearance-none h-4 w-4 rounded-full border border-purple-600 checked:bg-purple-600 checked:border-purple-600 cursor-pointer"
-                                checked={checked}
-                                onChange={(e) => setChecked(e.target.checked)}
+                                className="block appearance-none h-4 w-4 rounded-full border border-purple-600 checked:bg-purple-600 checked:border-purple-600 cursor-pointer"
+                                checked={selectAll}
+                                onChange={(e) => toggleSelectAll()}
                             />
-                            {checked && (
+                            {selectAll && (
                                 <Check className="w-4 h-4 text-white absolute top-0 left-0 pointer-events-none" />
                             )}
                         </div>
@@ -35,8 +52,9 @@ export default function QrCodeList() {
                 </tr>
             </thead>
             <tbody>
-                <QrListElement />
-                <QrListElement />
+                {qrs.map(qr =>
+                    <QrListElement key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem}/>
+                )}
             </tbody>
         </table>
     );
