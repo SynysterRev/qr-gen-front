@@ -12,7 +12,6 @@ export function useSelection(items: QrResponse[]) {
         } else {
             newSelectedItems.add(id);
         }
-        console.log(newSelectedItems)
         setSelectedItems(newSelectedItems);
     };
 
