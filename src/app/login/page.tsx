@@ -3,7 +3,6 @@
 import SignInForm from "@/components/forms/SignInForm";
 import Card from "../../components/ui/Card";
 import Link from "next/link";
-import { Toaster } from "react-hot-toast";
 
 export default function Login() {
 

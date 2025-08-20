@@ -2,7 +2,7 @@
 
 import QrCustomizer from "@/components/sections/QrCustomizer";
 import useQrGenerator from "@/hooks/useQrGenerator";
-import QrPreview from "./QrPreview";
+import QrPreview from "@/components/sections/QrPreview";
 import { Toaster } from "react-hot-toast";
 
 export default function QrGenerator() {
