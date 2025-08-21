@@ -1,4 +1,5 @@
 import Card from '@/components/ui/Card';
+import CreateQrFormModal from '@/components/ui/CreateQrFormModal';
 import QrCodeList from '@/components/ui/QrCodeList';
 import { Plus } from 'lucide-react';
 import { QrCode, Calendar, Eye, TrendingUp, Search } from 'lucide-react';
@@ -70,6 +71,7 @@ export default function QrManagement() {
                     <QrCodeList />
                 </Card>
             </div>
+            <CreateQrFormModal />
         </>
     );
 }
