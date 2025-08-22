@@ -6,28 +6,33 @@ import QrPreview from "@/components/sections/QrPreview";
 
 export default function QrGenerator() {
     const {
-        qrConfig,
+        // Config QR (couleurs, taille, etc.)
+        handleDropdownChange,
+
+        // Données du formulaire (type, contenu)
+        qrData,
+        handleDataChange,
+
+        // Preview
         qrPreviewUrl,
         qrModulesSize,
         isLoading,
-        handleInputChange,
-        handleSliderChange,
-        handleDropdownChange,
+
+        // Download
         handleDownload
     } = useQrGenerator();
 
     return (
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-center gap-8 text-start">
+        <div className="max-w-7xl mx-auto flex flex-col justify-center gap-8 text-start">
             <QrCustomizer
-                onChangeInput={handleInputChange}
-                onChangeSlider={handleSliderChange}
-                qrConfig={qrConfig}
+                qrData={qrData}
+                onDataChange={handleDataChange}
             />
             <QrPreview
-                handleDownload={handleDownload}
+                onDownload={handleDownload}
                 isLoading={isLoading}
                 onFormatChange={handleDropdownChange}
-                qrConfig={qrConfig}
+                qrConfig={qrData.config}
                 qrModulesSize={qrModulesSize}
                 qrPreviewUrl={qrPreviewUrl}
             />

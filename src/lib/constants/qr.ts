@@ -1,4 +1,4 @@
-import { QrCodeType, QrConfig, QrConfigFormProps } from "../types/qr";
+import { QrCodeType, QrData } from "../types/qr";
 
 export const FORMATS = [
     { id: 1, name: "PNG" },
@@ -6,20 +6,16 @@ export const FORMATS = [
     { id: 3, name: "PDF" },
 ];
 
-export const DEFAULT_QR_CONFIG: QrConfig = {
-    text: "https://qrcraft.app",
-    fillColor: "#8B5CF6",
-    backgroundColor: "#ffffff",
-    scale: 10,
-    borderSize: 2,
-    format: "SVG"
-};
-
-export const DEFAULT_QR_CONFIG_FORM: QrConfigFormProps = {
-    fillColor: "#8B5CF6",
-    backgroundColor: "#ffffff",
-    scale: 10,
-    borderSize: 2,
+export const DEFAULT_QR_DATA: QrData = {
+    type: "website",
+    website: "https://qrcraft.app",
+    config: {
+        fillColor: "#8B5CF6",
+        backgroundColor: "#ffffff",
+        scale: 10,
+        borderSize: 2,
+        format: "SVG"
+    }
 };
 
 export const QR_LIMITS = {

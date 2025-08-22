@@ -9,7 +9,7 @@ export default function QrPreview({
     isLoading,
     qrModulesSize,
     qrPreviewUrl,
-    handleDownload,
+    onDownload,
     onFormatChange
 }: QrPreviewProps) {
 
@@ -39,7 +39,7 @@ export default function QrPreview({
                 <div className="flex flex-col gap-2">
                     <label htmlFor="format">Output Format</label>
                     <div className="flex gap-2">
-                        <Listbox value={qrConfig.format}
+                        <Listbox value={qrConfig?.format}
                             onChange={onFormatChange}
                             name="format">
                             <ListboxButton
@@ -48,7 +48,7 @@ export default function QrPreview({
                                     'focus:outline-none focus:ring-2 focus:ring-indigo-500'
                                 )}
                             >
-                                {qrConfig.format}
+                                {qrConfig?.format}
                                 <ChevronDownIcon
                                     className="pointer-events-none absolute top-2.5 right-2.5 size-4 text-gray-400"
                                     aria-hidden="true"
@@ -77,7 +77,7 @@ export default function QrPreview({
                         </Listbox>
                     </div>
                 </div>
-                <button onClick={handleDownload} className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20 h-10">Download</button>
+                <button onClick={onDownload} className="rounded-xl border border-primary/40 py-2 px-4 cursor-pointer bg-white transition-all duration-300 hover:border-primary hover:bg-primary/20 h-10">Download</button>
             </div>
         </div>
     );

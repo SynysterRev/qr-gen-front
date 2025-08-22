@@ -1,91 +1,119 @@
 "use client";
 
-import { downloadQr, fetchQrPreview } from "@/lib/services/qrService";
-import { DEFAULT_QR_CONFIG } from "@/lib/constants/qr";
-import { QrConfig } from "@/lib/types/qr";
+import { downloadQr } from "@/lib/services/qrService";
+import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
+import { QrCodeType, QrData } from "@/lib/types/qr";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDebouncedCallback } from "use-debounce";
 import useLocalStorage from "./useLocalStorage";
+import useQrPreview from "./useQrPreview";
 import Link from "next/link";
 
 export default function useQrGenerator() {
+    const [qrData, setQrData] = useState<QrData>(DEFAULT_QR_DATA);
 
-    const [qrConfig, setQrConfig] = useState<QrConfig>(DEFAULT_QR_CONFIG);
-    const [qrPreviewUrl, setQrPreviewUrl] = useState<string | null>(null);
-    const [qrModulesSize, setQrModulesSize] = useState<number[] | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const {
+        qrPreviewUrl,
+        qrModulesSize,
+        isLoading,
+        generatePreview,
+        clearPreview
+    } = useQrPreview();
 
-    const debouncedUpdate = useDebouncedCallback(
-        (config) => generateQrCode(config),
-        300
-    );
+    const [usageCount, setUsageCount] = useLocalStorage("qr_usage", 0);
 
-    async function generateQrCode(config: QrConfig) {
-        setIsLoading(true);
-        try {
-            const data = await fetchQrPreview(config);
-            const { qr_base64, qr_modules_size } = data;
-            const previewUrl = `data:image/svg+xml;base64,${qr_base64}`;
-            setQrPreviewUrl(previewUrl);
-            setQrModulesSize(qr_modules_size);
-            setIsLoading(false);
+    // Fonction pour convertir les données du formulaire en texte pour le QR
+    const convertFormDataToText = (data: Partial<QrData>): string => {
+        switch (data.type) {
+            case "website":
+                return data.website || "";
+            case "text":
+                return data.text || "";
+            case "wifi":
+                if (data.wifi?.ssid) {
+                    return `WIFI:T:WPA;S:${data.wifi.ssid};P:${data.wifi.password || ""};H:false;`;
+                }
+                return "";
+            case "contact":
+                if (data.contact) {
+                    const { firstName, lastName, phone, email, organization, website, address } = data.contact;
+                    const name = [firstName, lastName].filter(Boolean).join(' ');
+                    return [
+                        'BEGIN:VCARD',
+                        'VERSION:3.0',
+                        name ? `FN:${name}` : '',
+                        organization ? `ORG:${organization}` : '',
+                        phone ? `TEL;TYPE=WORK,VOICE:${phone}` : '',
+                        email ? `EMAIL;TYPE=PREF,INTERNET:${email}` : '',
+                        website ? `URL:${website}` : '',
+                        address ? `ADR;TYPE=WORK:;;${address};;;` : '',
+                        'END:VCARD'
+                    ].filter(Boolean).join('\n');
+                }
+                return "";
+            case "email":
+                if (data.email?.email) {
+                    const subject = data.email.subject ? `?subject=${encodeURIComponent(data.email.subject)}` : '';
+                    const body = data.email.message ? `${subject ? '&' : '?'}body=${encodeURIComponent(data.email.message)}` : '';
+                    return `mailto:${data.email.email}${subject}${body}`;
+                }
+                return "";
+            case "sms":
+                if (data.sms?.number) {
+                    return `sms:${data.sms.number}?body=${data.sms.message || ''}`;
+                }
+                return "";
+            default:
+                return "";
         }
-        catch (error) {
-            console.error('Error preview:', error);
-            toast.error('Preview failed, please try again.');
-        }
-    }
+    };
 
+    // Générer la preview quand les données changent
     useEffect(() => {
-        if (qrConfig.text.length > 0) {
-            debouncedUpdate(qrConfig);
+        const text = convertFormDataToText(qrData);
+        const config = {
+            ...qrData,
+            text
+        };
+
+        if (text) {
+            generatePreview(config);
         } else {
-            setQrPreviewUrl(null);
-            setQrModulesSize(null);
+            clearPreview();
         }
-    }, [qrConfig, debouncedUpdate]);
-
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const { value, name } = e.currentTarget;
-        setQrConfig(prevQrConfig => ({
-            ...prevQrConfig,
-            [name]: value
-        }));
-    }
-
-    function handleSliderChange(name: string, value: number) {
-        setQrConfig(prevQrConfig => ({
-            ...prevQrConfig,
-            [name]: value
-        }));
-    }
+    }, [qrData, generatePreview, clearPreview]);
 
     function handleDropdownChange(value: string) {
-        setQrConfig(prev => ({
-            ...prev,
+        setQrData(prevQrData => ({
+            ...prevQrData,
             format: value,
         }));
     }
 
-
-    const [
-        usageCount,
-        setUsageCount
-    ] = useLocalStorage("qr_usage", 0);
+    function handleDataChange<K extends keyof QrData>(key: K, value: QrData[K]) {
+        setQrData(prev => ({
+            ...prev,
+            [key]: value
+        }));
+    }
 
     async function handleDownload() {
         try {
             if (usageCount < 20) {
-                const blob = await downloadQr(qrConfig);
+                const text = convertFormDataToText(qrData);
+                const configForDownload = {
+                    ...qrData,
+                    text
+                };
+
+                const blob = await downloadQr(configForDownload);
 
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `qrcode.${qrConfig.format}`;
+                a.download = `qrcode.${qrData?.config.format}`;
                 a.click();
                 URL.revokeObjectURL(url);
-
             }
 
             const newCount = usageCount + 1;
@@ -140,13 +168,19 @@ export default function useQrGenerator() {
     }
 
     return {
-        qrConfig,
+        // Config QR (couleurs, taille, etc.)
+        qrData,
+        handleDropdownChange,
+
+        // Données du formulaire (type, contenu)
+        handleDataChange,
+
+        // Preview
         qrPreviewUrl,
         qrModulesSize,
         isLoading,
-        handleInputChange,
-        handleSliderChange,
-        handleDropdownChange,
+
+        // Download
         handleDownload
-    }
-};
+    };
+}
