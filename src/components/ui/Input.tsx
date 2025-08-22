@@ -7,7 +7,7 @@ interface InputData {
     type: string;
     placeholder?: string;
     icon?: React.FC<SVGProps<SVGSVGElement>>;
-    onChange?: ChangeEventHandler<HTMLInputElement>;
+    onChange: ChangeEventHandler<HTMLInputElement>;
     onBlur?: FocusEventHandler<HTMLInputElement>;
     error?: string;
     className?: string;
@@ -40,7 +40,7 @@ export default function Input({
                     id={name}
                     name={name}
                     type={type}
-                    className={`${className} rounded-xl w-full h-10 px-3 ${Icon ? "pl-10" : ""}`}
+                    className={`${className} rounded-xl w-full h-10 px-3 border border-gray-300 ${Icon ? "pl-10" : ""}`}
                     placeholder={placeholder}
                     value={value}
                     onChange={onChange}

@@ -1,3 +1,5 @@
+"use client";
+
 import { Palette } from "lucide-react";
 import Modal from "./Modal";
 import CreateQrForm from "../forms/CreateQrForm";

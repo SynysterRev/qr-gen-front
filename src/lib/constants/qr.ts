@@ -1,4 +1,4 @@
-import { QrConfig } from "../types/qr";
+import { QrCodeType, QrConfig, QrConfigFormProps } from "../types/qr";
 
 export const FORMATS = [
     { id: 1, name: "PNG" },
@@ -13,6 +13,13 @@ export const DEFAULT_QR_CONFIG: QrConfig = {
     scale: 10,
     borderSize: 2,
     format: "SVG"
+};
+
+export const DEFAULT_QR_CONFIG_FORM: QrConfigFormProps = {
+    fillColor: "#8B5CF6",
+    backgroundColor: "#ffffff",
+    scale: 10,
+    borderSize: 2,
 };
 
 export const QR_LIMITS = {
@@ -80,3 +87,12 @@ export const FEATURES = [
         iconColor: "text-pink-600"
     },
 ]
+
+export const QR_TYPES: { value: QrCodeType; label: string }[] = [
+    { value: "website", label: "Website URL" },
+    { value: "text", label: "Plain Text" },
+    { value: "wifi", label: "WiFi Network" },
+    { value: "contact", label: "Contact Card" },
+    { value: "email", label: "Email" },
+    { value: "sms", label: "SMS" },
+];
