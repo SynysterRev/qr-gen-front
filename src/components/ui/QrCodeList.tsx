@@ -1,12 +1,17 @@
 "use client";
 
 import { Check } from 'lucide-react';
-import QrListElement from './QrListElement';
+import QrCodeRow from './QrCodeRow';
 import { useSelection } from '@/hooks/useSelection';
-import useUserQrs from '@/hooks/useUserQrs';
-import { QrResponse } from '@/lib/types/qr';
+import { QrModalSection, QrResponse } from '@/lib/types/qr';
 
-export default function QrCodeList({ qrs }: { qrs: QrResponse[] }) {
+export default function QrCodeList({
+    qrs,
+    onSelectOption
+}: {
+    qrs: QrResponse[],
+    onSelectOption: (qr: QrResponse, section: QrModalSection) => void
+}) {
 
     const {
         selectAll,
@@ -47,7 +52,7 @@ export default function QrCodeList({ qrs }: { qrs: QrResponse[] }) {
             </thead>
             <tbody>
                 {qrs.map(qr =>
-                    <QrListElement key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem} />
+                    <QrCodeRow key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem} onSelectOption={onSelectOption}/>
                 )}
             </tbody>
         </table>

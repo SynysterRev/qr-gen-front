@@ -1,6 +1,8 @@
 import { MouseEventHandler } from "react";
 
 export type QrCodeType = "website" | "text" | "wifi" | "contact" | "email" | "sms";
+export type QrModalSection = "overview" | "analytics" | "settings" | "download";
+export const modalSections: QrModalSection[] = ["overview", "analytics", "download", "settings"];
 
 // Base QR configuration interface
 export interface QrConfigProps {
@@ -105,7 +107,7 @@ export interface QrResponse {
     id: string;
     title: string;
     userId: string;
-    url: string;
+    data: string;
     scanCount: number;
     isDynamic: boolean;
     createdAt: Date;

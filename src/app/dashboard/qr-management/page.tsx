@@ -3,8 +3,10 @@
 import Card from '@/components/ui/Card';
 import CreateQrFormModal from '@/components/ui/CreateQrFormModal';
 import QrCodeList from '@/components/ui/QrCodeList';
+import QrInfoModal from '@/components/ui/QrInfoModal';
 import useCreateQr from '@/hooks/useCreateQr';
 import useModal from '@/hooks/useModal';
+import useQrInfoModal from '@/hooks/useQrInfoModal';
 import useUserQrs from '@/hooks/useUserQrs';
 import { QrData } from '@/lib/types/qr';
 import { Plus } from 'lucide-react';
@@ -14,6 +16,12 @@ export default function QrManagement() {
     const { isOpen, openModal, closeModal } = useModal();
     const { createQrCode, isCreating } = useCreateQr();
     const { qrs, addQr, refetch } = useUserQrs();
+
+    const {
+        modalInfoState,
+        closeQrInfoModal,
+        openQrInfoModal
+    } = useQrInfoModal();
 
     const details = [{
         id: 1,
@@ -90,7 +98,7 @@ export default function QrManagement() {
                 </Card>
                 <Card className="p-6 mb-6">
                     <h2 className="font-semibold text-2xl mb-4">Your QR Codes</h2>
-                    <QrCodeList qrs={qrs} />
+                    <QrCodeList qrs={qrs} onSelectOption={openQrInfoModal} />
                 </Card>
             </div>
             <CreateQrFormModal
@@ -99,6 +107,14 @@ export default function QrManagement() {
                 onSubmit={handleSubmit}
                 onClose={closeModal}
             />
+            {modalInfoState.qr !== null
+                && <QrInfoModal
+                    qr={modalInfoState.qr}
+                    initialSection={modalInfoState.section!}
+                    isOpen={modalInfoState.qr !== null}
+                    onClose={closeQrInfoModal}
+                />
+            }
         </>
     );
 }
