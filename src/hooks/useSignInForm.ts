@@ -1,5 +1,3 @@
-"use client";
-
 import { createUser } from "@/lib/services/userService";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';

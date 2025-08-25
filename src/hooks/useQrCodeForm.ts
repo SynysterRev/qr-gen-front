@@ -1,61 +1,41 @@
 import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
-import { QrCodeType, QrData } from "@/lib/types/qr";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useQrGenerator from "./useQrGenerator";
 
 export function useQrCodeForm() {
 
-    const [formData, setFormData] = useState<QrData>(DEFAULT_QR_DATA);
-    const [isOpen, setIsOpen] = useState(false);
+    // const [formData, setFormData] = useState<QrData>(DEFAULT_QR_DATA);
+    const [title, setTitle] = useState("");
 
     const {
         qrData,
         qrPreviewUrl,
-        qrModulesSize,
         isLoading,
         handleDropdownChange,
         handleDataChange,
-        handleDownload
     } = useQrGenerator();
 
-    const setType = (type: QrCodeType) => {
-        setFormData((prev) => ({ ...prev, type }));
-    };
-
-    const updateField = <K extends keyof QrData>(key: K, value: QrData[K]) => {
-        setFormData((prev) => ({
-            ...prev,
-            [key]: value,
-        }));
-    };
+    function handleTitleChange(value: string): void {
+        setTitle(value);
+    }
 
     const reset = () => {
-        setFormData(DEFAULT_QR_DATA);
+        // setFormData(DEFAULT_QR_DATA);
     };
 
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        await handleDownload();
-        closeModal();
-    };
+    const isValid = useMemo(() => {
+        return title.length > 0 && qrPreviewUrl !== null;
+    }, [title, qrPreviewUrl]);
 
     return {
-        formData,
-        setType,
-        updateField,
         reset,
-        isOpen,
+        title,
         qrData,
         qrPreviewUrl,
-        qrModulesSize,
         isLoading,
-        openModal,
-        closeModal,
-        handleSubmit,
+        isValid,
         handleDropdownChange,
         handleDataChange,
+        handleTitleChange,
     };
 }

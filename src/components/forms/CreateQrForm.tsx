@@ -2,34 +2,82 @@
 "use client";
 
 import Input from '@/components/ui/Input';
-import QrCodeTypeSelector from '@/components/ui/QrCodeFieldsType/QrCodeTypeSelector';
 import { useQrCodeForm } from '@/hooks/useQrCodeForm';
-import WebsiteFormFields from '@/components/ui/QrCodeFieldsType/WebsiteFormFields';
-import PlainTextFormFields from '@/components/ui/QrCodeFieldsType/PlainTextFormFields';
-import ContactFormFields from '@/components/ui/QrCodeFieldsType/ContactFormFields';
-import WifiFormFields from '@/components/ui/QrCodeFieldsType/WifiFormFields';
-import EmailFormFields from '@/components/ui/QrCodeFieldsType/EmailFormFields';
-import SmsFormFields from '@/components/ui/QrCodeFieldsType/SmsFormFields';
-import Slider from '../ui/Slider';
+import QrCustomizer from '../ui/QrCustomizer';
+import QrPreview from '../ui/QrPreview';
+import { FormEvent } from 'react';
 
-export default function CreateQrForm({ onSubmit }: { onSubmit: (data: any) => void }) {
+export default function CreateQrForm({ onSubmit }:
+    { onSubmit: (data: any) => void }) {
 
-    const { formData, setType, updateField, reset } = useQrCodeForm();
+    const {
+        qrData,
+        title,
+        isLoading,
+        isValid,
+        handleDropdownChange,
+        handleDataChange,
+        handleTitleChange,
+        qrPreviewUrl,
+        reset
+    } = useQrCodeForm();
+
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (isValid) {
+            onSubmit({ qrData, title });
+        }
+    };
 
     return (
         <>
-            <form className="space-y-4" onSubmit={onSubmit}>
+            <form className="space-y-4" onSubmit={handleFormSubmit}>
+
                 <Input
                     label="QR Code Name"
                     name="qr-name"
                     type={"text"}
-                    value={""}
+                    value={title}
                     placeholder="My QR Code"
                     className="border border-gray-200"
                     required={true}
-                    onChange={() => { }}
+                    onChange={(e) => handleTitleChange(e.currentTarget.value)}
                 ></Input>
-                <div className="space-y-2 flex flex-col">
+                <QrCustomizer
+                    qrData={qrData}
+                    onDataChange={handleDataChange}
+                />
+                <QrPreview
+                    isLoading={isLoading}
+                    onFormatChange={handleDropdownChange}
+                    qrConfig={qrData.config}
+                    qrPreviewUrl={qrPreviewUrl}
+                    qrModulesSize={null}
+                />
+                <button
+                    type="submit"
+                    className="w-full rounded-xl bg-primary py-2 text-white cursor-pointer transition-all duration-300 
+                    enabled:hover:shadow-[var(--shadow-elegant)]  enabled:hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow 
+                    disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={!isValid}>Create QR Code</button>
+                {/* <div className="flex justify-center items-center animate-float h-[400px]">
+                    {qrPreviewUrl && (
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">
+                            <img
+                                src={qrPreviewUrl}
+                                alt="qr preview"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                    )}
+                </div> */}
+            </form>
+        </>
+    )
+}
+
+
+{/* <div className="space-y-2 flex flex-col">
                     <label>QR Code Type</label>
                     <QrCodeTypeSelector type={formData.type} onChange={setType} />
                     {formData.type === "website" && (
@@ -82,10 +130,10 @@ export default function CreateQrForm({ onSubmit }: { onSubmit: (data: any) => vo
                     <div className="flex-1/2">
                         <Slider
                             label="Border Size"
-                            value={formData.qrConfig.borderSize}
+                            value={formData.config.borderSize}
                             min={0}
                             max={10}
-                            onChange={(value) => updateField("qrConfig", { ...formData.qrConfig, borderSize: value })}
+                            onChange={(value) => updateField("config", { ...formData.config, borderSize: value })}
                             color="#8B5CF6"
                             name="borderSize"
                         />
@@ -93,18 +141,17 @@ export default function CreateQrForm({ onSubmit }: { onSubmit: (data: any) => vo
                     <div className="flex flex-col gap-2 flex-1/2">
                         <label htmlFor="url">QR Color</label>
                         <div className="flex gap-2">
-                            {/* change input color to something a bit more friendly */}
                             <input
                                 type="color"
                                 className="border border-gray-300 rounded-xl p-1 w-12 h-10"
-                                value={formData.qrConfig.fillColor}
-                                onChange={e => updateField("qrConfig", { ...formData.qrConfig, fillColor: e.target.value })}
+                                value={formData.config.fillColor}
+                                onChange={e => updateField("config", { ...formData.config, fillColor: e.target.value })}
                                 name="fillColor"
                             />
                             <input
                                 className="border border-gray-300 rounded-xl p-2 w-full"
-                                value={formData.qrConfig.fillColor}
-                                onChange={e => updateField("qrConfig", { ...formData.qrConfig, fillColor: e.target.value })}
+                                value={formData.config.fillColor}
+                                onChange={e => updateField("config", { ...formData.config, fillColor: e.target.value })}
                                 name="fillColor"></input>
                         </div>
                     </div>
@@ -112,10 +159,10 @@ export default function CreateQrForm({ onSubmit }: { onSubmit: (data: any) => vo
                 <div>
                     <Slider
                         label="Scale"
-                        value={formData.qrConfig.scale}
+                        value={formData.config.scale}
                         min={1}
                         max={20}
-                        onChange={(value) => updateField("qrConfig", { ...formData.qrConfig, scale: value })}
+                        onChange={(value) => updateField("config", { ...formData.config, scale: value })}
                         color="#8B5CF6"
                         name="scale"
                     />
@@ -136,19 +183,4 @@ export default function CreateQrForm({ onSubmit }: { onSubmit: (data: any) => vo
                             name="backgroundColor"></input>
                     </div>
                 </div>
-                <h3 className="text-2xl font-bold">Preview</h3>
-                {/* <div className="flex justify-center items-center animate-float h-[400px]">
-                    {qrPreviewUrl && (
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">
-                            <img
-                                src={qrPreviewUrl}
-                                alt="qr preview"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
-                    )}
-                </div> */}
-            </form>
-        </>
-    )
-}
+                <h3 className="text-2xl font-bold">Preview</h3> */}

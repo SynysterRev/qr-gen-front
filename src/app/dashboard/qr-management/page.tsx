@@ -1,11 +1,15 @@
+"use client";
+
 import Card from '@/components/ui/Card';
 import CreateQrFormModal from '@/components/ui/CreateQrFormModal';
 import QrCodeList from '@/components/ui/QrCodeList';
+import useModal from '@/hooks/useModal';
+import { QrData } from '@/lib/types/qr';
 import { Plus } from 'lucide-react';
 import { QrCode, Calendar, Eye, TrendingUp, Search } from 'lucide-react';
 
 export default function QrManagement() {
-
+    const { isOpen, openModal, closeModal } = useModal();
     const details = [{
         id: 1,
         title: "Total QR Codes",
@@ -28,6 +32,11 @@ export default function QrManagement() {
         iconColor: "text-orange-500"
     }]
 
+    const handleSubmit = (data: QrData) => {
+        console.log('QR créé:', data);
+        closeModal();
+    };
+
     return (
         <>
             <div className="container max-w-7xl mx-auto">
@@ -36,8 +45,11 @@ export default function QrManagement() {
                         <h1 className="font-bold text-3xl text-start">QR Code Management</h1>
                         <p className="text-muted-foreground text-lg">Manage, edit, and track all your QR codes</p>
                     </div>
-                    <button type="submit" className="px-4 text-center rounded-xl h-10 text-white text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 
-                    cursor-pointer inline-flex items-center justify-center gap-2">
+                    <button 
+                    type="button" 
+                    className="px-4 text-center rounded-xl h-10 text-white text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-600 inline-flex items-center justify-center gap-2
+                    hover:from-purple-700 hover:to-pink-700 cursor-pointer"
+                    onClick={openModal}>
                         <Plus className="h-4 w-4 mt-0.5" />
                         Create New QR
                     </button>
@@ -71,7 +83,7 @@ export default function QrManagement() {
                     <QrCodeList />
                 </Card>
             </div>
-            <CreateQrFormModal />
+            <CreateQrFormModal isOpen={isOpen} onSubmit={handleSubmit} onClose={closeModal}/>
         </>
     );
 }

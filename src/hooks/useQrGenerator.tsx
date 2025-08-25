@@ -1,5 +1,3 @@
-"use client";
-
 import { downloadQr } from "@/lib/services/qrService";
 import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
 import { QrCodeType, QrData } from "@/lib/types/qr";

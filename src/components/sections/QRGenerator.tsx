@@ -1,8 +1,8 @@
 "use client";
 
-import QrCustomizer from "@/components/sections/QrCustomizer";
+import QrCustomizer from "@/components/ui/QrCustomizer";
 import useQrGenerator from "@/hooks/useQrGenerator";
-import QrPreview from "@/components/sections/QrPreview";
+import QrPreview from "@/components/ui/QrPreview";
 
 export default function QrGenerator() {
     const {

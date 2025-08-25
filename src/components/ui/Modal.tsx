@@ -1,3 +1,4 @@
+import { ModalProps } from "@/lib/types/modal";
 import Card from "./Card";
 
 export default function Modal({ children, isOpen, onClose, title }: ModalProps) {

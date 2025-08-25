@@ -1,21 +1,21 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { FORMATS } from "../constants/qr";
-import { QrConfig } from "../types/qr";
+import { QrData } from "../types/qr";
 import { apiConfig } from "../api";
 import { UserResponse } from "../types/user";
 
 const apiUrl = apiConfig.endpoints.qr;
 
-export async function fetchQrPreview(config: QrConfig) {
+export async function fetchQrPreview(qrData: QrData) {
     const requestData = {
-        url: config.text,
+        data: qrData.text,
         customization: {
-            dark: config.fillColor,
-            light: config.backgroundColor,
-            scale: config.scale,
-            border: config.borderSize,
+            dark: qrData.config.fillColor,
+            light: qrData.config.backgroundColor,
+            scale: qrData.config.scale,
+            border: qrData.config.borderSize,
         },
-        format: FORMATS[1].name
+        // format: FORMATS[1].name
     };
     const response = await fetch(`${apiUrl}/preview`, {
         method: "POST",
@@ -32,16 +32,16 @@ export async function fetchQrPreview(config: QrConfig) {
     return response.json();
 }
 
-export async function downloadQr(config: QrConfig) {
+export async function downloadQr(qrData: QrData) {
     const requestData = {
-        url: config.text,
-        customization: {
-            dark: config.fillColor,
-            light: config.backgroundColor,
-            scale: config.scale,
-            border: config.borderSize,
+        data: qrData.text,
+         customization: {
+            dark: qrData.config.fillColor,
+            light: qrData.config.backgroundColor,
+            scale: qrData.config.scale,
+            border: qrData.config.borderSize,
         },
-        format: config.format.toLocaleLowerCase()
+        format: qrData.config?.format?.toLocaleLowerCase() ?? "svg"
     };
     const response = await fetch(`${apiUrl}/download`, {
         method: "POST",

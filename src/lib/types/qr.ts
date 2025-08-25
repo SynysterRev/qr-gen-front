@@ -54,7 +54,7 @@ export interface QrPreviewProps {
     isLoading: boolean;
     qrModulesSize: number[] | null;
     qrPreviewUrl: string | null;
-    onDownload: MouseEventHandler<HTMLButtonElement>;
+    onDownload?: MouseEventHandler<HTMLButtonElement>;
     onFormatChange: (format: string) => void;
 }
 

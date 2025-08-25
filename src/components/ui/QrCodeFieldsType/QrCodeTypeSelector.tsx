@@ -20,7 +20,7 @@ export default function QrCodeTypeSelector({ type, onChange }: QrCodeTypeSelecto
           key={t.value}
           type="button"
           className={`flex flex-col items-center justify-center p-4 transition rounded-lg border border-gray-200 text-sm cursor-pointer ${type === t.value
-            ? "bg-pink-300 text-white"
+            ? "bg-primary text-white"
             : "hover:bg-gray-200"
             }`}
           onClick={() => onChange(t.value)}
