@@ -1,5 +1,5 @@
 import { QrResponse } from '@/lib/types/qr';
-import { formatLocalDate } from '@/lib/utils';
+import { formatLocalDate } from '@/lib/utils/utils';
 import { QrCode, Ellipsis, Check } from 'lucide-react';
 
 interface QrElementData {

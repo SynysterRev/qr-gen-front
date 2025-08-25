@@ -9,6 +9,7 @@ export interface ModalProps {
 
 export interface CreateQrFormModalProps {
     isOpen: boolean;
+    isCreating: boolean;
     onClose: () => void;
     onSubmit: (data: QrData) => void;
 }

@@ -4,15 +4,9 @@ import { Check } from 'lucide-react';
 import QrListElement from './QrListElement';
 import { useSelection } from '@/hooks/useSelection';
 import useUserQrs from '@/hooks/useUserQrs';
+import { QrResponse } from '@/lib/types/qr';
 
-export default function QrCodeList() {
-
-    const {
-        qrs,
-        loading,
-        error,
-        refetch
-    } = useUserQrs();
+export default function QrCodeList({ qrs }: { qrs: QrResponse[] }) {
 
     const {
         selectAll,
@@ -53,7 +47,7 @@ export default function QrCodeList() {
             </thead>
             <tbody>
                 {qrs.map(qr =>
-                    <QrListElement key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem}/>
+                    <QrListElement key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem} />
                 )}
             </tbody>
         </table>

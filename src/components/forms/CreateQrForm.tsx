@@ -6,18 +6,19 @@ import { useQrCodeForm } from '@/hooks/useQrCodeForm';
 import QrCustomizer from '../ui/QrCustomizer';
 import QrPreview from '../ui/QrPreview';
 import { FormEvent } from 'react';
+import { Loader2 } from 'lucide-react';
 
-export default function CreateQrForm({ onSubmit }:
-    { onSubmit: (data: any) => void }) {
+export default function CreateQrForm({ onSubmit, isCreating }: {
+    onSubmit: (data: any) => void
+    isCreating?: boolean;
+}) {
 
     const {
         qrData,
-        title,
         isLoading,
         isValid,
         handleDropdownChange,
         handleDataChange,
-        handleTitleChange,
         qrPreviewUrl,
         reset
     } = useQrCodeForm();
@@ -25,7 +26,7 @@ export default function CreateQrForm({ onSubmit }:
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isValid) {
-            onSubmit({ qrData, title });
+            onSubmit(qrData);
         }
     };
 
@@ -37,11 +38,11 @@ export default function CreateQrForm({ onSubmit }:
                     label="QR Code Name"
                     name="qr-name"
                     type={"text"}
-                    value={title}
+                    value={qrData.title ?? ""}
                     placeholder="My QR Code"
                     className="border border-gray-200"
                     required={true}
-                    onChange={(e) => handleTitleChange(e.currentTarget.value)}
+                    onChange={(e) => handleDataChange("title", e.currentTarget.value)}
                 ></Input>
                 <QrCustomizer
                     qrData={qrData}
@@ -59,7 +60,16 @@ export default function CreateQrForm({ onSubmit }:
                     className="w-full rounded-xl bg-primary py-2 text-white cursor-pointer transition-all duration-300 
                     enabled:hover:shadow-[var(--shadow-elegant)]  enabled:hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow 
                     disabled:cursor-not-allowed disabled:opacity-50"
-                    disabled={!isValid}>Create QR Code</button>
+                    disabled={!isValid}>
+                    {isCreating ? (
+                        <div className="flex items-center justify-center gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Creating...
+                        </div>
+                    ) : (
+                        "Create QR Code"
+                    )}
+                </button>
                 {/* <div className="flex justify-center items-center animate-float h-[400px]">
                     {qrPreviewUrl && (
                         <div className="relative rounded-2xl overflow-hidden shadow-lg w-80 h-80">

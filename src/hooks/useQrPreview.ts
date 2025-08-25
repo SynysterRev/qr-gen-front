@@ -33,7 +33,7 @@ export default function useQrPreview() {
     );
 
     const generatePreview = useCallback((qrData: QrData) => {
-        if (qrData.text && qrData.text.length > 0) {
+        if (qrData.data && qrData.data.length > 0) {
             debouncedUpdate(qrData);
         } else {
             setQrPreviewUrl(null);

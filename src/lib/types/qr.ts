@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 
 export type QrCodeType = "website" | "text" | "wifi" | "contact" | "email" | "sms";
 
@@ -23,6 +23,7 @@ export interface ContactData {
 
 // Main QR Data type that includes all possible data types and config
 export type QrData = {
+    title?: string;
     type: QrCodeType;
     website?: string;
     text?: string;
@@ -41,6 +42,7 @@ export type QrData = {
         message: string;
     };
     config: QrConfigProps;
+    data: string;
 }
 
 // Props interfaces for components
@@ -107,4 +109,29 @@ export interface QrResponse {
     scanCount: number;
     isDynamic: boolean;
     createdAt: Date;
+}
+
+export interface QrPreviewRequest {
+    data: string;
+    customization: {
+        dark: string;
+        light: string;
+        scale: number;
+        border: number;
+    };
+    format: string;
+}
+
+export interface QrCreateRequest {
+    title: string;
+    user_id: string;
+    data: string;
+    customization: {
+        dark: string;
+        light: string;
+        scale: number;
+        border: number;
+    };
+    scan_count: number;
+    is_dynamic: boolean;
 }

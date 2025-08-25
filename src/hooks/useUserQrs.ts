@@ -35,10 +35,16 @@ export default function useUserQrs() {
         }
     }, [user]);
 
+    const addQr = (newQr: QrResponse) => {
+        setQrs(prev => [newQr, ...prev]);
+        console.log(newQr);
+    };
+
     return {
         qrs,
         loading,
         error,
-        refetch: fetchQrs
+        refetch: fetchQrs,
+        addQr
     };
 }

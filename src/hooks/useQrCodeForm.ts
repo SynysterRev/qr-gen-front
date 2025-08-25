@@ -5,7 +5,6 @@ import useQrGenerator from "./useQrGenerator";
 export function useQrCodeForm() {
 
     // const [formData, setFormData] = useState<QrData>(DEFAULT_QR_DATA);
-    const [title, setTitle] = useState("");
 
     const {
         qrData,
@@ -15,27 +14,21 @@ export function useQrCodeForm() {
         handleDataChange,
     } = useQrGenerator();
 
-    function handleTitleChange(value: string): void {
-        setTitle(value);
-    }
-
     const reset = () => {
         // setFormData(DEFAULT_QR_DATA);
     };
 
     const isValid = useMemo(() => {
-        return title.length > 0 && qrPreviewUrl !== null;
-    }, [title, qrPreviewUrl]);
+        return qrData.title && qrPreviewUrl !== null;
+    }, [qrData.title, qrPreviewUrl]);
 
     return {
         reset,
-        title,
         qrData,
         qrPreviewUrl,
         isLoading,
         isValid,
         handleDropdownChange,
         handleDataChange,
-        handleTitleChange,
     };
 }

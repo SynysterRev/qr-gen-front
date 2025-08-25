@@ -9,8 +9,9 @@ import { CreateQrFormModalProps } from "@/lib/types/modal";
 
 export default function CreateQrFormModal({
     isOpen,
+    isCreating,
     onClose,
-    onSubmit
+    onSubmit,
 }: CreateQrFormModalProps) {
 
     return (
@@ -23,7 +24,7 @@ export default function CreateQrFormModal({
                 <div className="flex flex-col space-y-4">
                     <h4 className="text-lg font-semibold leading-none tracking-tight">Basic Information</h4>
                 </div>
-                <CreateQrForm onSubmit={onSubmit} />
+                <CreateQrForm onSubmit={onSubmit} isCreating={isCreating}/>
             </Modal>
         </>
     )
