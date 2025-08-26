@@ -3,12 +3,12 @@
 import { Check } from 'lucide-react';
 import QrCodeRow from './QrCodeRow';
 import { useSelection } from '@/hooks/useSelection';
-import { QrModalSection, QrResponse } from '@/lib/types/qr';
+import { QrData, QrModalSection, QrResponse } from '@/lib/types/qr';
 
 export default function QrCodeList({
     qrs
 }: {
-    qrs: QrResponse[],
+    qrs: QrData[],
 }) {
 
     const {

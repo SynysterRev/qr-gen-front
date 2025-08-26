@@ -1,4 +1,4 @@
-import { modalSections, QrModalSection, QrResponse } from "@/lib/types/qr";
+import { modalSections, QrData, QrModalSection } from "@/lib/types/qr";
 import { useState } from "react";
 import Modal from "./Modal";
 import QrPreview from "./QrPreview";
@@ -10,7 +10,7 @@ export default function QrInfoModal({
     isOpen,
     onClose,
 }: {
-    qr: QrResponse;
+    qr: QrData;
     isOpen: boolean;
     initialSection: QrModalSection;
     onClose: () => void;
@@ -89,22 +89,5 @@ export default function QrInfoModal({
                 </div>
             </Modal>
         </>
-        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-        //     <div className="bg-white rounded-xl p-6 w-[600px] shadow-lg relative">
-        //         {/* Header */}
-        //         <div className="flex justify-between items-center mb-4">
-        //             <h2 className="text-xl font-bold">Manage QR</h2>
-        //             <button
-        //                 onClick={onClose}
-        //                 className="text-gray-500 hover:text-gray-800"
-        //             >
-        //                 ✕
-        //             </button>
-        //         </div>
-
-        //         {/* Navigation Tabs */}
-
-        //     </div>
-        // </div>
     );
 }

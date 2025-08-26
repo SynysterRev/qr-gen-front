@@ -1,12 +1,12 @@
 
 import { useModals } from '@/app/contexts/ModalContext';
 import useModal from '@/hooks/useModal';
-import { QrModalSection, QrResponse } from '@/lib/types/qr';
+import { QrData, QrModalSection } from '@/lib/types/qr';
 import { formatLocalDate } from '@/lib/utils/utils';
 import { QrCode, Ellipsis, Check, Eye, Edit, Download, Trash, ChartColumn } from 'lucide-react';
 
 interface QrElementData {
-    qr: QrResponse;
+    qr: QrData;
     isSelected: boolean;
     onChange: (id: string) => void;
 };
@@ -19,7 +19,7 @@ export default function QrCodeRow({
 
     const creationDate = formatLocalDate(qr.createdAt.toString());
 
-    const { openQrInfoModal } = useModals();
+    const { openQrInfoModal, openEditQrModal } = useModals();
     const { isOpen, openModal, closeModal } = useModal();
 
     const selectOption = (qr: any, section: QrModalSection) => {
@@ -118,7 +118,10 @@ export default function QrCodeRow({
                                         className="w-full text-gray-700 rounded-xl px-2 py-2 text-sm cursor-pointer 
                                     hover:bg-gray-100 text-start flex items-center gap-2"
                                         role="menuitem"
-                                        onClick={() => selectOption(qr, "analytics")}
+                                        onClick={() => {
+                                            closeModal();
+                                            openEditQrModal(qr);
+                                        }}
                                     >
                                         <Edit className="w-4 h-4" />
                                         Edit

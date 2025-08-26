@@ -7,9 +7,13 @@ export interface ModalProps {
     title?: string;
 }
 
-export interface CreateQrFormModalProps {
+export type formMode = "create" | "edit";
+
+export interface QrFormModalProps {
+    mode: formMode;
     isOpen: boolean;
     isCreating: boolean;
     onClose: () => void;
     onSubmit: (data: QrData) => void;
+    initialData?: Partial<QrData>;
 }

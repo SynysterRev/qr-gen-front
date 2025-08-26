@@ -1,6 +1,6 @@
 import { QrData } from "../types/qr";
 import { apiConfig } from "../api";
-import { mapQrDataToCreateRequest, mapQrDataToPreviewRequest } from "../utils/mappers/qrMappers";
+import { mapQrDataToCreateRequest, mapQrDataToPreviewRequest, mapQrDataToUpdateRequest } from "../utils/mappers/qrMappers";
 
 const apiUrl = apiConfig.endpoints.qr;
 
@@ -60,7 +60,24 @@ export async function createQr(qrData: QrData, userId: string) {
     });
 
     if (!response.ok) {
-        throw new Error('Fetch Qr failed');
+        throw new Error('Fail to create new QR');
+    }
+
+    return response.json();
+}
+
+export async function updateQr(qrData: QrData, userId: string) {
+    const requestData = mapQrDataToUpdateRequest(qrData, userId);
+    const response = await fetch(`${apiConfig.endpoints.users}/${userId}/qrs/${qrData.id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+    });
+
+    if (!response.ok) {
+        throw new Error('Fail to update new QR');
     }
 
     return response.json();

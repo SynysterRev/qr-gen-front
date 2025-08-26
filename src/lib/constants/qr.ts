@@ -7,6 +7,8 @@ export const FORMATS = [
 ];
 
 export const DEFAULT_QR_DATA: QrData = {
+    id:"",
+    data: "",
     type: "website",
     website: "https://qrcraft.app",
     config: {
@@ -15,7 +17,9 @@ export const DEFAULT_QR_DATA: QrData = {
         scale: 10,
         borderSize: 2,
         format: "SVG"
-    }
+    },
+    scanCount: 0,
+    createdAt: new Date(),
 };
 
 export const QR_LIMITS = {

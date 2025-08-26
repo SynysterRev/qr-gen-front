@@ -1,7 +1,7 @@
-import { QrResponse } from '@/lib/types/qr';
+import { QrData } from '@/lib/types/qr';
 import { useState, useEffect } from 'react';
 
-export function useSelection(items: QrResponse[]) {
+export function useSelection(items: QrData[]) {
     const [selectedItems, setSelectedItems] = useState(new Set());
     const [selectAll, setSelectAll] = useState(false);
 
@@ -18,7 +18,7 @@ export function useSelection(items: QrResponse[]) {
     const toggleSelectAll = () => {
         const newSelectAll = !selectAll;
         setSelectAll(newSelectAll);
-        
+
         if (newSelectAll) {
             setSelectedItems(new Set(items.map(item => item.id)));
         } else {
@@ -29,7 +29,7 @@ export function useSelection(items: QrResponse[]) {
     useEffect(() => {
         const allSelected = items.length > 0 && selectedItems.size === items.length;
         const someSelected = selectedItems.size > 0 && selectedItems.size < items.length;
-        
+
         setSelectAll(allSelected);
     }, [selectedItems, items.length]);
 
@@ -45,11 +45,11 @@ export function useSelection(items: QrResponse[]) {
         selectedItems,
         selectAll,
         selectedCount,
-        
+
         toggleItem,
         toggleSelectAll,
         clearSelection,
-        
+
         isSelected,
         getSelectedItems,
     };

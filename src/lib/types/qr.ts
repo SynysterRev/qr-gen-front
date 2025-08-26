@@ -4,12 +4,15 @@ export type QrCodeType = "website" | "text" | "wifi" | "contact" | "email" | "sm
 export type QrModalSection = "overview" | "analytics" | "settings" | "download";
 export const modalSections: QrModalSection[] = ["overview", "analytics", "download", "settings"];
 
-// Base QR configuration interface
-export interface QrConfigProps {
+export interface QrConfigBaseProps {
     fillColor: string;
     backgroundColor: string;
     scale: number;
     borderSize: number;
+}
+
+// Base QR configuration interface
+export interface QrConfigProps extends QrConfigBaseProps {
     format?: string; // Optional format for download
 }
 
@@ -25,6 +28,7 @@ export interface ContactData {
 
 // Main QR Data type that includes all possible data types and config
 export type QrData = {
+    id: string;
     title?: string;
     type: QrCodeType;
     website?: string;
@@ -45,6 +49,8 @@ export type QrData = {
     };
     config: QrConfigProps;
     data: string;
+    createdAt: Date;
+    scanCount: number;
 }
 
 // Props interfaces for components
@@ -111,6 +117,13 @@ export interface QrResponse {
     scanCount: number;
     isDynamic: boolean;
     createdAt: Date;
+    type: QrCodeType;
+    customization: {
+        dark: string;
+        light: string;
+        scale: number;
+        border: number;
+    };
 }
 
 export interface QrPreviewRequest {
@@ -136,4 +149,17 @@ export interface QrCreateRequest {
     };
     scan_count: number;
     is_dynamic: boolean;
+    type: QrCodeType;
+}
+
+export interface QrUpdateRequest {
+    title: string;
+    data: string;
+    customization: {
+        dark: string;
+        light: string;
+        scale: number;
+        border: number;
+    };
+    type: QrCodeType;
 }

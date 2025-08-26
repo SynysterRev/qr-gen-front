@@ -8,8 +8,11 @@ import useQrPreview from "./useQrPreview";
 import Link from "next/link";
 import { convertFormDataToText } from "@/lib/utils/utils";
 
-export default function useQrGenerator() {
-    const [qrData, setQrData] = useState<QrData>(DEFAULT_QR_DATA);
+export default function useQrGenerator({ initialData }: { initialData?: Partial<QrData> } = {}) {
+    const [qrData, setQrData] = useState<QrData>({
+        ...DEFAULT_QR_DATA,
+        ...initialData
+    });
 
     const {
         qrPreviewUrl,
@@ -121,6 +124,7 @@ export default function useQrGenerator() {
 
     return {
         qrData,
+        setQrData,
         handleDropdownChange,
 
         handleDataChange,

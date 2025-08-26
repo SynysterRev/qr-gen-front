@@ -1,18 +1,18 @@
 "use client";
 
-import { QrModalSection, QrResponse } from '@/lib/types/qr';
+import { QrData, QrModalSection } from '@/lib/types/qr';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 // Types pour tes différents modals
 interface QrInfoModalState {
     isOpen: boolean;
-    qr: QrResponse | null;
+    qr: QrData | null;
     section?: QrModalSection;
 }
 
 interface SimpleQrModalState {
     isOpen: boolean;
-    qr?: QrResponse | null;
+    qr?: QrData | null;
 }
 
 interface SimpleModalState {
@@ -30,10 +30,10 @@ interface ModalContextType {
 
     // Actions pour ouvrir les modals
     openCreateQrModal: () => void;
-    openQrInfoModal: (qr: QrResponse, section?: QrModalSection) => void;
-    openEditQrModal: (qr: QrResponse) => void;
-    openDeleteQrModal: (qr: QrResponse) => void;
-    openDuplicateQrModal: (qr: QrResponse) => void;
+    openQrInfoModal: (qr: QrData, section?: QrModalSection) => void;
+    openEditQrModal: (qr: QrData) => void;
+    openDeleteQrModal: (qr: QrData) => void;
+    openDuplicateQrModal: (qr: QrData) => void;
 
     // Actions pour fermer les modals
     closeCreateQrModal: () => void;
@@ -75,13 +75,13 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     // Actions pour ouvrir
     const openCreateQrModal = () =>
         setCreateQrModal({ isOpen: true });
-    const openQrInfoModal = (qr: QrResponse, section?: QrModalSection) =>
+    const openQrInfoModal = (qr: QrData, section?: QrModalSection) =>
         setQrInfoModal({ isOpen: true, qr, section });
-    const openEditQrModal = (qr: QrResponse) =>
+    const openEditQrModal = (qr: QrData) =>
         setEditQrModal({ isOpen: true, qr });
-    const openDeleteQrModal = (qr: QrResponse) =>
+    const openDeleteQrModal = (qr: QrData) =>
         setDeleteQrModal({ isOpen: true, qr });
-    const openDuplicateQrModal = (qr: QrResponse) =>
+    const openDuplicateQrModal = (qr: QrData) =>
         setDuplicateQrModal({ isOpen: true, qr });
 
     // Actions pour fermer

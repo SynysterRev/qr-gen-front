@@ -2,7 +2,7 @@
 
 import { useModals } from '@/app/contexts/ModalContext';
 import Card from '@/components/ui/Card';
-import CreateQrFormModal from '@/components/ui/CreateQrFormModal';
+import QrFormModal from '@/components/ui/QrFormModal';
 import QrCodeList from '@/components/ui/QrCodeList';
 import QrInfoModal from '@/components/ui/QrInfoModal';
 import useCreateQr from '@/hooks/useCreateQr';
@@ -10,16 +10,12 @@ import useUserQrs from '@/hooks/useUserQrs';
 import { QrData } from '@/lib/types/qr';
 import { Plus } from 'lucide-react';
 import { QrCode, Calendar, Eye, TrendingUp, Search } from 'lucide-react';
+import useUpdateQr from '@/hooks/useUpdateQr';
 
 export default function QrManagement() {
     const { createQrCode, isCreating } = useCreateQr();
-    const { qrs, addQr, refetch } = useUserQrs();
-
-    // const {
-    //     modalInfoState,
-    //     closeQrInfoModal,
-    //     openQrInfoModal
-    // } = useQrInfoModal();
+    const { updateQrCode, isUpdating } = useUpdateQr();
+    const { qrs, addQr, updateQr, refetch } = useUserQrs();
 
     const {
         createQrModal,
@@ -56,11 +52,21 @@ export default function QrManagement() {
         iconColor: "text-orange-500"
     }]
 
-    const handleSubmit = async (data: QrData) => {
+    const handleCreateSubmit = async (data: QrData) => {
         try {
             const newQr = await createQrCode(data);
             addQr(newQr);
             closeCreateQrModal();
+        } catch (error) {
+            await refetch();
+        }
+    };
+
+    const handleUpdateSubmit = async (data: QrData) => {
+        try {
+            const updatedQr = await updateQrCode(data);
+            updateQr(updatedQr!);
+            closeEditQrModal();
         } catch (error) {
             await refetch();
         }
@@ -112,11 +118,21 @@ export default function QrManagement() {
                     <QrCodeList qrs={qrs} />
                 </Card>
             </div>
-            {createQrModal.isOpen && (<CreateQrFormModal
+            {createQrModal.isOpen && (<QrFormModal
+                mode="create"
                 isOpen={createQrModal.isOpen}
                 isCreating={isCreating}
-                onSubmit={handleSubmit}
+                onSubmit={handleCreateSubmit}
                 onClose={closeCreateQrModal}
+            />
+            )}
+            {editQrModal.isOpen && (<QrFormModal
+                mode="edit"
+                isOpen={editQrModal.isOpen}
+                isCreating={isUpdating}
+                onSubmit={handleUpdateSubmit}
+                onClose={closeEditQrModal}
+                initialData={editQrModal.qr!}
             />
             )}
             {qrInfoModal.isOpen && (
@@ -126,7 +142,7 @@ export default function QrManagement() {
                     isOpen={qrInfoModal.isOpen}
                     onClose={closeQrInfoModal}
                 />
-            ) }
+            )}
         </>
     );
 }

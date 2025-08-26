@@ -2,11 +2,12 @@ import { UserResponse } from "@/lib/types/user";
 import useLocalStorage from "./useLocalStorage";
 import { getAllQrs } from "@/lib/services/qrService";
 import { useEffect, useState } from "react";
-import { QrResponse } from "@/lib/types/qr";
+import { QrData } from "@/lib/types/qr";
+import { mapQrResponseToQrData } from "@/lib/utils/mappers/qrMappers";
 
 export default function useUserQrs() {
     const [user] = useLocalStorage<UserResponse | null>("current_user", null);
-    const [qrs, setQrs] = useState<QrResponse[]>([]);
+    const [qrs, setQrs] = useState<QrData[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +21,8 @@ export default function useUserQrs() {
         setError(null);
         try {
             const data = await getAllQrs(user.id);
-            setQrs(data);
+            const mappedQrs: QrData[] = data.map(mapQrResponseToQrData);
+            setQrs(mappedQrs);
         } catch (err) {
             setError("Failed to fetch QR codes.");
             setQrs([]);
@@ -35,9 +37,16 @@ export default function useUserQrs() {
         }
     }, [user]);
 
-    const addQr = (newQr: QrResponse) => {
+    const addQr = (newQr: QrData) => {
         setQrs(prev => [newQr, ...prev]);
-        console.log(newQr);
+    };
+
+    const updateQr = (updatedQr: QrData) => {
+        setQrs(prev =>
+            prev.map(qr =>
+                qr.id === updatedQr.id ? { ...qr, ...updatedQr } : qr
+            )
+        );
     };
 
     return {
@@ -45,6 +54,7 @@ export default function useUserQrs() {
         loading,
         error,
         refetch: fetchQrs,
-        addQr
+        addQr,
+        updateQr
     };
 }

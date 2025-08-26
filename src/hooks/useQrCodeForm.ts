@@ -1,21 +1,25 @@
 import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useQrGenerator from "./useQrGenerator";
+import { QrData } from "@/lib/types/qr";
 
-export function useQrCodeForm() {
-
-    // const [formData, setFormData] = useState<QrData>(DEFAULT_QR_DATA);
+export function useQrCodeForm({ initialData }: { initialData?: Partial<QrData> } = {}) {
 
     const {
         qrData,
+        setQrData,
         qrPreviewUrl,
+        qrModulesSize,
         isLoading,
         handleDropdownChange,
         handleDataChange,
-    } = useQrGenerator();
+    } = useQrGenerator({ initialData });
 
     const reset = () => {
-        // setFormData(DEFAULT_QR_DATA);
+        setQrData({
+            ...DEFAULT_QR_DATA,
+            ...initialData,
+        });
     };
 
     const isValid = useMemo(() => {
@@ -26,6 +30,7 @@ export function useQrCodeForm() {
         reset,
         qrData,
         qrPreviewUrl,
+        qrModulesSize,
         isLoading,
         isValid,
         handleDropdownChange,
