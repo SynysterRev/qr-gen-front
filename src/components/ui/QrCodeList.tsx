@@ -6,11 +6,9 @@ import { useSelection } from '@/hooks/useSelection';
 import { QrModalSection, QrResponse } from '@/lib/types/qr';
 
 export default function QrCodeList({
-    qrs,
-    onSelectOption
+    qrs
 }: {
     qrs: QrResponse[],
-    onSelectOption: (qr: QrResponse, section: QrModalSection) => void
 }) {
 
     const {
@@ -52,7 +50,7 @@ export default function QrCodeList({
             </thead>
             <tbody>
                 {qrs.map(qr =>
-                    <QrCodeRow key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem} onSelectOption={onSelectOption}/>
+                    <QrCodeRow key={qr.id} qr={qr} isSelected={isSelected(qr.id)} onChange={toggleItem} />
                 )}
             </tbody>
         </table>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { ModalProvider } from "./contexts/ModalContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,37 +29,39 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 text-foreground min-h-lvh`}
       >
-        <div className="main-container">
-          {children}
-          <Toaster
-            position="top-center"
-            reverseOrder={false}
-            gutter={8}
-            containerClassName=""
-            containerStyle={{}}
-            toastOptions={{
-              className: '',
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
+        <ModalProvider>
+          <div className="main-container">
+            {children}
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+              gutter={8}
+              containerClassName=""
+              containerStyle={{}}
+              toastOptions={{
+                className: '',
+                duration: 4000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
 
-              success: {
-                iconTheme: {
-                  primary: '#4aed88',
-                  secondary: '#fff',
+                success: {
+                  iconTheme: {
+                    primary: '#4aed88',
+                    secondary: '#fff',
+                  },
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: '#ff4b4b',
-                  secondary: '#fff',
+                error: {
+                  iconTheme: {
+                    primary: '#ff4b4b',
+                    secondary: '#fff',
+                  },
                 },
-              },
-            }} />
-        </div>
+              }} />
+          </div>
+        </ModalProvider>
       </body>
-    </html>
+    </html >
   );
 }

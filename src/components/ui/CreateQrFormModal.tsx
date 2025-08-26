@@ -3,8 +3,6 @@
 import { Palette } from "lucide-react";
 import Modal from "./Modal";
 import CreateQrForm from "../forms/CreateQrForm";
-import useModal from "@/hooks/useModal";
-import { QrData } from "@/lib/types/qr";
 import { CreateQrFormModalProps } from "@/lib/types/modal";
 
 export default function CreateQrFormModal({

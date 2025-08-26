@@ -75,17 +75,14 @@ export default function QrInfoModal({
                     )}
 
                     {section === "settings" && (
-                        <div>
-                            <input
-                                defaultValue={qr.title}
-                                className="border p-2 rounded w-full mb-2"
-                            />
-                            <input
-                                defaultValue={qr.data}
-                                className="border p-2 rounded w-full mb-2"
-                            />
-                            <button className="px-4 py-2 bg-purple-600 text-white rounded">
-                                Save
+                        <div className="flex flex-col gap-2">
+                            <button className="px-4 py-2 bg-primary text-white rounded-xl cursor-pointer transition-all group duration-300 hover:shadow-[var(--shadow-elegant)] 
+                    hover:bg-primary/90 bg-gradient-to-r from-primary to-primary-glow">
+                                Edit
+                            </button>
+                            <button className="px-4 py-2 bg-red-500 text-white rounded-xl cursor-pointer transition-all group duration-300 hover:shadow-[var(--shadow-elegant)] 
+                    hover:bg-red-500/90 bg-gradient-to-r from-red-500 to-red-glow">
+                                Delete
                             </button>
                         </div>
                     )}

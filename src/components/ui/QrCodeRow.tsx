@@ -1,3 +1,5 @@
+
+import { useModals } from '@/app/contexts/ModalContext';
 import useModal from '@/hooks/useModal';
 import { QrModalSection, QrResponse } from '@/lib/types/qr';
 import { formatLocalDate } from '@/lib/utils/utils';
@@ -7,23 +9,22 @@ interface QrElementData {
     qr: QrResponse;
     isSelected: boolean;
     onChange: (id: string) => void;
-    onSelectOption: (qr: any, section: QrModalSection) => void;
 };
 
 export default function QrCodeRow({
     qr,
     isSelected,
     onChange,
-    onSelectOption
 }: QrElementData) {
 
     const creationDate = formatLocalDate(qr.createdAt.toString());
 
+    const { openQrInfoModal } = useModals();
     const { isOpen, openModal, closeModal } = useModal();
 
     const selectOption = (qr: any, section: QrModalSection) => {
         closeModal();
-        onSelectOption(qr, section)
+        openQrInfoModal(qr, section);
     }
 
     return (

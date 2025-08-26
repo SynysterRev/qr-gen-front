@@ -1,27 +1,38 @@
 "use client";
 
+import { useModals } from '@/app/contexts/ModalContext';
 import Card from '@/components/ui/Card';
 import CreateQrFormModal from '@/components/ui/CreateQrFormModal';
 import QrCodeList from '@/components/ui/QrCodeList';
 import QrInfoModal from '@/components/ui/QrInfoModal';
 import useCreateQr from '@/hooks/useCreateQr';
-import useModal from '@/hooks/useModal';
-import useQrInfoModal from '@/hooks/useQrInfoModal';
 import useUserQrs from '@/hooks/useUserQrs';
 import { QrData } from '@/lib/types/qr';
 import { Plus } from 'lucide-react';
 import { QrCode, Calendar, Eye, TrendingUp, Search } from 'lucide-react';
 
 export default function QrManagement() {
-    const { isOpen, openModal, closeModal } = useModal();
     const { createQrCode, isCreating } = useCreateQr();
     const { qrs, addQr, refetch } = useUserQrs();
 
+    // const {
+    //     modalInfoState,
+    //     closeQrInfoModal,
+    //     openQrInfoModal
+    // } = useQrInfoModal();
+
     const {
-        modalInfoState,
+        createQrModal,
+        qrInfoModal,
+        editQrModal,
+        deleteQrModal,
+        openCreateQrModal,
+        openQrInfoModal,
+        closeCreateQrModal,
         closeQrInfoModal,
-        openQrInfoModal
-    } = useQrInfoModal();
+        closeEditQrModal,
+        closeDeleteQrModal
+    } = useModals();
 
     const details = [{
         id: 1,
@@ -49,7 +60,7 @@ export default function QrManagement() {
         try {
             const newQr = await createQrCode(data);
             addQr(newQr);
-            closeModal();
+            closeCreateQrModal();
         } catch (error) {
             await refetch();
         }
@@ -67,7 +78,7 @@ export default function QrManagement() {
                         type="button"
                         className="px-4 text-center rounded-xl h-10 text-white text-sm font-semibold bg-gradient-to-r from-purple-600 to-pink-600 inline-flex items-center justify-center gap-2
                     hover:from-purple-700 hover:to-pink-700 cursor-pointer"
-                        onClick={openModal}>
+                        onClick={openCreateQrModal}>
                         <Plus className="h-4 w-4 mt-0.5" />
                         Create New QR
                     </button>
@@ -98,23 +109,24 @@ export default function QrManagement() {
                 </Card>
                 <Card className="p-6 mb-6">
                     <h2 className="font-semibold text-2xl mb-4">Your QR Codes</h2>
-                    <QrCodeList qrs={qrs} onSelectOption={openQrInfoModal} />
+                    <QrCodeList qrs={qrs} />
                 </Card>
             </div>
-            <CreateQrFormModal
-                isOpen={isOpen}
+            {createQrModal.isOpen && (<CreateQrFormModal
+                isOpen={createQrModal.isOpen}
                 isCreating={isCreating}
                 onSubmit={handleSubmit}
-                onClose={closeModal}
+                onClose={closeCreateQrModal}
             />
-            {modalInfoState.qr !== null
-                && <QrInfoModal
-                    qr={modalInfoState.qr}
-                    initialSection={modalInfoState.section!}
-                    isOpen={modalInfoState.qr !== null}
+            )}
+            {qrInfoModal.isOpen && (
+                <QrInfoModal
+                    qr={qrInfoModal.qr!}
+                    initialSection={qrInfoModal.section!}
+                    isOpen={qrInfoModal.isOpen}
                     onClose={closeQrInfoModal}
                 />
-            }
+            ) }
         </>
     );
 }
