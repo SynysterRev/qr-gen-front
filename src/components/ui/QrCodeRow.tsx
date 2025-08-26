@@ -1,14 +1,58 @@
 
 import { useModals } from '@/app/contexts/ModalContext';
 import useModal from '@/hooks/useModal';
-import { QrData, QrModalSection } from '@/lib/types/qr';
-import { formatLocalDate } from '@/lib/utils/utils';
-import { QrCode, Ellipsis, Check, Eye, Edit, Download, Trash, ChartColumn } from 'lucide-react';
+import { QrCodeType, QrData, QrModalSection } from '@/lib/types/qr';
+import { capitalizeFirstLetter, formatLocalDate } from '@/lib/utils/utils';
+import { QrCode, Ellipsis, Check, Eye, Edit, Download, Trash, ChartColumn, Globe, FileText, Wifi, Contact, Mail, MessageSquare } from 'lucide-react';
 
 interface QrElementData {
     qr: QrData;
     isSelected: boolean;
     onChange: (id: string) => void;
+};
+
+const DISPLAY_INFO: Record<QrCodeType, {
+    icon: React.ReactNode;
+    name: string;
+    bgColor: string;
+    color: string;
+}> = {
+    website: {
+        icon: <Globe className="w-4 h-4" />,
+        name: "Website",
+        bgColor: "bg-blue-100",
+        color: "text-blue-700"
+    },
+    text: {
+        icon: <FileText className="w-4 h-4" />,
+        name: "Text",
+        bgColor: "bg-orange-100", 
+        color: "text-orange-700"
+    },
+    wifi: {
+        icon: <Wifi className="w-4 h-4" />,
+        name: "WiFi Network",
+        bgColor: "bg-emerald-100",
+        color: "text-emerald-700"
+    },
+    contact: {
+        icon: <Contact className="w-4 h-4" />,
+        name: "Contact Card",
+        bgColor: "bg-violet-100", 
+        color: "text-violet-700"
+    },
+    email: {
+        icon: <Mail className="w-4 h-4" />,
+        name: "Email",
+        bgColor: "bg-cyan-100", 
+        color: "text-cyan-700"
+    },
+    sms: {
+        icon: <MessageSquare className="w-4 h-4" />,
+        name: "SMS",
+        bgColor: "bg-fuchsia-100", 
+        color: "text-fuchsia-600"
+    },
 };
 
 export default function QrCodeRow({
@@ -47,15 +91,15 @@ export default function QrCodeRow({
                         <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-purple-600/10">
                             <QrCode className="w-5 h-5 text-purple-600" />
                         </div>
-                        <div>
-                            <p className="font-medium">{qr.title}</p>
-                            <p className="text-sm text-muted-foreground">{qr.data}</p>
+                        <div className="flex items-center justify-center gap-1">
+                            <span className={`text-sm mt-1 ${DISPLAY_INFO[qr.type].color}`}>{DISPLAY_INFO[qr.type].icon}</span>
+                            <span className="font-medium">{DISPLAY_INFO[qr.type].name}</span>
                         </div>
                     </div>
                 </td>
                 <td className="px-4">
-                    <div className="p-1 px-2.5 rounded-2xl bg-purple-100 inline-flex items-center">
-                        <p className="text-sm font-semibold text-purple-800">URL</p>
+                    <div className={`p-1 px-2.5 rounded-2xl inline-flex items-center ${DISPLAY_INFO[qr.type].bgColor}`}>
+                        <p className={`text-sm font-semibold ${DISPLAY_INFO[qr.type].color}`}>{capitalizeFirstLetter(qr.type)}</p>
                     </div>
                 </td>
                 <td className="px-4">

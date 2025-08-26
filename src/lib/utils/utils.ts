@@ -17,6 +17,11 @@ export function formatLocalDate(dateString: string, locale: string | null = null
     return new Intl.DateTimeFormat(currentLocale, options).format(date);
 }
 
+export function capitalizeFirstLetter(sentence: string) {
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1)
+}
+
+
 export const convertFormDataToText = (data: Partial<QrData>): string => {
     switch (data.type) {
         case "website":
