@@ -92,14 +92,14 @@ export default function QrCodeRow({
                             <QrCode className="w-5 h-5 text-purple-600" />
                         </div>
                         <div className="flex items-center justify-center gap-1">
-                            <span className={`text-sm mt-1 ${DISPLAY_INFO[qr.type].color}`}>{DISPLAY_INFO[qr.type].icon}</span>
-                            <span className="font-medium">{DISPLAY_INFO[qr.type].name}</span>
+                            <span className={`mt-1 ${DISPLAY_INFO[qr.type].color}`}>{DISPLAY_INFO[qr.type].icon}</span>
+                            <span className="font-medium text-base">{qr.title}</span>
                         </div>
                     </div>
                 </td>
                 <td className="px-4">
                     <div className={`p-1 px-2.5 rounded-2xl inline-flex items-center ${DISPLAY_INFO[qr.type].bgColor}`}>
-                        <p className={`text-sm font-semibold ${DISPLAY_INFO[qr.type].color}`}>{capitalizeFirstLetter(qr.type)}</p>
+                        <p className={`text-sm font-semibold ${DISPLAY_INFO[qr.type].color}`}>{DISPLAY_INFO[qr.type].name}</p>
                     </div>
                 </td>
                 <td className="px-4">
