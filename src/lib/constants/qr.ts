@@ -1,5 +1,7 @@
 import { QrCodeType, QrData } from "../types/qr";
 
+export type Format = (typeof FORMATS[number])["name"];
+
 export const FORMATS = [
     { id: 1, name: "PNG" },
     { id: 2, name: "SVG" },

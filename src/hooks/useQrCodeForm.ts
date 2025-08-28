@@ -1,5 +1,5 @@
 import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useQrGenerator from "./useQrGenerator";
 import { QrData } from "@/lib/types/qr";
 

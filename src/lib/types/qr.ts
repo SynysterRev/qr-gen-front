@@ -1,4 +1,5 @@
 import { MouseEventHandler } from "react";
+import { Format } from "../constants/qr";
 
 export type QrCodeType = "website" | "text" | "wifi" | "contact" | "email" | "sms";
 export type QrModalSection = "overview" | "analytics" | "settings" | "download";
@@ -13,7 +14,7 @@ export interface QrConfigBaseProps {
 
 // Base QR configuration interface
 export interface QrConfigProps extends QrConfigBaseProps {
-    format?: string; // Optional format for download
+    format?: Format; // Optional format for download
 }
 
 export interface ContactData {
@@ -62,10 +63,14 @@ export interface QrCustomizerProps {
 export interface QrPreviewProps {
     qrConfig: QrConfigProps;
     isLoading: boolean;
-    qrModulesSize: number[] | null;
+    qrModulesSize?: number[] | null;
     qrPreviewUrl: string | null;
+}
+
+export interface QrDownloadProps {  
+    format: Format;
     onDownload?: MouseEventHandler<HTMLButtonElement>;
-    onFormatChange: (format: string) => void;
+    onFormatChange: (format: Format) => void;
 }
 
 // Form field props interfaces

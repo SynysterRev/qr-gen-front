@@ -1,5 +1,5 @@
-import { downloadQr } from "@/lib/services/qrService";
-import { DEFAULT_QR_DATA } from "@/lib/constants/qr";
+import { downloadPreviewQr } from "@/lib/services/qrService";
+import { DEFAULT_QR_DATA, Format } from "@/lib/constants/qr";
 import { QrCodeType, QrData } from "@/lib/types/qr";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -38,10 +38,13 @@ export default function useQrGenerator({ initialData }: { initialData?: Partial<
         }
     }, [qrData, generatePreview, clearPreview]);
 
-    function handleDropdownChange(value: string) {
+    function handleDropdownChange(value: Format) {
         setQrData(prevQrData => ({
             ...prevQrData,
-            format: value,
+            config: {
+                ...prevQrData.config,
+                format: value,
+            },
         }));
     }
 
@@ -61,7 +64,7 @@ export default function useQrGenerator({ initialData }: { initialData?: Partial<
                     text
                 };
 
-                const blob = await downloadQr(configForDownload);
+                const blob = await downloadPreviewQr(configForDownload);
 
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');

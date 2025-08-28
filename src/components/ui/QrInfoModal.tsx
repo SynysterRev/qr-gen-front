@@ -1,4 +1,4 @@
-import { modalSections, QrCodeType, QrData, QrModalSection } from "@/lib/types/qr";
+import { modalSections, QrData, QrModalSection } from "@/lib/types/qr";
 import { useState } from "react";
 import Modal from "./Modal";
 import QrPreview from "./QrPreview";
@@ -9,6 +9,9 @@ import useQrAnalytics from "@/hooks/useQrAnalytics";
 import StatsList from "./analytics/StatsList";
 import { Globe, Smartphone } from 'lucide-react';
 import RecentScans from "./analytics/RecentScans";
+import useQrPreview from "@/hooks/useQrPreview";
+import QrDownloadControls from "./QrDownloadControls";
+import useQrDownload from "@/hooks/useQrDownload";
 
 export default function QrInfoModal({
     qr,
@@ -25,6 +28,8 @@ export default function QrInfoModal({
     const { openDeleteQrModal, openEditQrModal } = useModals();
     const creationDate = formatLocalDate(qr.createdAt.toString())
     const { qrAnalytics } = useQrAnalytics(qr.id);
+    const { isLoading, qrPreviewUrl, generatePreview, clearPreview } = useQrPreview();
+    const { format, handleDownload, handleFormatChange } = useQrDownload();
 
     const handleOpenEditModal = (qr: QrData) => {
         onClose();
@@ -36,6 +41,15 @@ export default function QrInfoModal({
         openDeleteQrModal(qr);
     }
 
+    const handleSetSection = (qr: QrData, section: QrModalSection) => {
+        if (section === "download" || section === "overview") {
+            generatePreview(qr)
+        } else if (qrPreviewUrl !== null) {
+            clearPreview();
+        }
+        setSection(section);
+    }
+
     return (
         <>
             <Modal onClose={onClose} isOpen={isOpen} title={qr?.title}>
@@ -43,7 +57,7 @@ export default function QrInfoModal({
                     {modalSections.map((tab) => (
                         <button
                             key={tab}
-                            onClick={() => setSection(tab as QrModalSection)}
+                            onClick={() => handleSetSection(qr, tab as QrModalSection)}
                             className={`pb-2 px-2 py-1 ${section === tab
                                 ? "bg-white rounded-xl font-semibold text-primary"
                                 : "text-gray-500 hover:text-gray-700 cursor-pointer"
@@ -58,7 +72,10 @@ export default function QrInfoModal({
                 <div>
                     {section === "overview" && (
                         <div>
-                            {/* <QrPreview /> */}
+                            <QrPreview
+                                qrPreviewUrl={qrPreviewUrl}
+                                isLoading={isLoading}
+                                qrConfig={qr.config} />
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="flex flex-col space-y-1">
                                     <p className="text-muted-foreground text-sm">Name</p>
@@ -88,15 +105,24 @@ export default function QrInfoModal({
 
                     {section === "analytics" && (
                         <div>
-                            {qrAnalytics && (
-                                <div>
-                                    <div className="flex space-x-6">
-                                        <StatsList data={qrAnalytics.topCountries} IconComponent={Globe} title="Top Countries" />
-                                        <StatsList data={qrAnalytics.topDevices} IconComponent={Smartphone} title="Device Types" />
-                                    </div>
-                                    <RecentScans scans={qrAnalytics.mostRecent} />
-                                </div>
-                            )}
+                            <div className="flex space-x-6">
+                                <StatsList data={qrAnalytics?.topCountries ?? []} IconComponent={Globe} title="Top Countries" />
+                                <StatsList data={qrAnalytics?.topDevices ?? []} IconComponent={Smartphone} title="Device Types" />
+                            </div>
+                            <RecentScans scans={qrAnalytics?.mostRecent ?? []} />
+                        </div>
+                    )}
+
+                    {section === "download" && (
+                        <div>
+                            <QrPreview
+                                qrPreviewUrl={qrPreviewUrl}
+                                isLoading={isLoading}
+                                qrConfig={qr.config} />
+                            <QrDownloadControls
+                                onFormatChange={handleFormatChange}
+                                onDownload={() => handleDownload(qr)}
+                                format={format} />
                         </div>
                     )}
 

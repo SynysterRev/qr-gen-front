@@ -1,5 +1,5 @@
 import { QrData } from "../types/qr";
-import { apiConfig } from "../api";
+import { apiConfig, buildUrl } from "../api";
 import { mapQrDataToCreateRequest, mapQrDataToPreviewRequest, mapQrDataToUpdateRequest } from "../utils/mappers/qrMappers";
 
 const apiUrl = apiConfig.endpoints.qr;
@@ -21,7 +21,7 @@ export async function fetchQrPreview(qrData: QrData) {
     return response.json();
 }
 
-export async function downloadQr(qrData: QrData) {
+export async function downloadPreviewQr(qrData: QrData) {
     const requestData = mapQrDataToPreviewRequest(qrData);
     const response = await fetch(`${apiUrl}/download`, {
         method: "POST",
@@ -29,6 +29,19 @@ export async function downloadQr(qrData: QrData) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData)
+    });
+
+    if (!response.ok) {
+        throw new Error('Download failed');
+    }
+
+    return response.blob();
+}
+
+export async function downloadQr(qrId: string, format: string) {
+    const url = buildUrl(apiUrl, `/${qrId}/download?format=${format}`);
+    const response = await fetch(url, {
+        method: "POST"
     });
 
     if (!response.ok) {
