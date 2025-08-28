@@ -13,7 +13,7 @@ export default function QrFormModal({
     onSubmit,
     initialData
 }: QrFormModalProps) {
-    console.log(initialData);
+    
     return (
         <>
             <Modal title={`${mode == "create" ? "Create New QR Code" : "Edit QR Code"}`} isOpen={isOpen} onClose={onClose}>
