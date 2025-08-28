@@ -163,3 +163,20 @@ export interface QrUpdateRequest {
     };
     type: QrCodeType;
 }
+
+export interface BasicStats {
+    name: string;
+    count: number;
+}
+
+export interface RecentScan {
+    deviceType: string;
+    country: string;
+    scannedAt: Date;
+}
+
+export interface QrStatsResponse {
+    topCountries: BasicStats[];
+    topDevices: BasicStats[];
+    mostRecent: RecentScan[];
+}

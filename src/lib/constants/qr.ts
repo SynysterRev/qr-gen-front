@@ -88,11 +88,16 @@ export const FEATURES = [
     },
 ]
 
-export const QR_TYPES: { value: QrCodeType; label: string }[] = [
-    { value: "website", label: "Website URL" },
-    { value: "text", label: "Plain Text" },
-    { value: "wifi", label: "WiFi Network" },
-    { value: "contact", label: "Contact Card" },
-    { value: "email", label: "Email" },
-    { value: "sms", label: "SMS" },
-];
+export const QR_TYPES_MAP: Record<QrCodeType, string> = {
+  website: "Website",
+  text: "Text",
+  wifi: "Wi-Fi",
+  contact: "Contact",
+  email: "Email",
+  sms: "SMS",
+};
+
+// Tableau pour selects / dropdowns
+export const QR_TYPES_ARRAY: { value: QrCodeType; label: string }[] = Object.entries(QR_TYPES_MAP).map(
+  ([value, label]) => ({ value: value as QrCodeType, label })
+);

@@ -106,15 +106,7 @@ export default function QrCodeRow({
                     {qr.scanCount}
                 </td>
                 <td className="px-4">
-                    <div className="p-1 px-2.5 rounded-2xl bg-green-100 inline-flex items-center">
-                        <p className="text-sm font-semibold text-green-800">Active</p>
-                    </div>
-                </td>
-                <td className="px-4">
                     {creationDate}
-                </td>
-                <td className="px-4">
-                    2 hours ago
                 </td>
                 <td className="px-4">
                     <div className="relative inline-block">

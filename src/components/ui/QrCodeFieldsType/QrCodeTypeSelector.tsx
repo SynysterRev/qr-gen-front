@@ -1,4 +1,4 @@
-import { QR_TYPES } from "@/lib/constants/qr";
+import { QR_TYPES_ARRAY } from "@/lib/constants/qr";
 import { QrCodeType, QrCodeTypeSelectorProps } from "@/lib/types/qr";
 import { Globe, FileText, Wifi, Contact, Mail, MessageSquare } from "lucide-react";
 
@@ -15,7 +15,7 @@ const ICONS: Record<QrCodeType, React.ReactNode> = {
 export default function QrCodeTypeSelector({ type, onChange }: QrCodeTypeSelectorProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-      {QR_TYPES.map((t) => (
+      {QR_TYPES_ARRAY.map((t) => (
         <button
           key={t.value}
           type="button"

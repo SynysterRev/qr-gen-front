@@ -1,9 +1,14 @@
-import { modalSections, QrData, QrModalSection } from "@/lib/types/qr";
+import { modalSections, QrCodeType, QrData, QrModalSection } from "@/lib/types/qr";
 import { useState } from "react";
 import Modal from "./Modal";
 import QrPreview from "./QrPreview";
 import { formatLocalDate } from "@/lib/utils/utils";
 import { useModals } from "@/app/contexts/ModalContext";
+import { QR_TYPES_MAP } from "@/lib/constants/qr";
+import useQrAnalytics from "@/hooks/useQrAnalytics";
+import StatsList from "./analytics/StatsList";
+import { Globe, Smartphone } from 'lucide-react';
+import RecentScans from "./analytics/RecentScans";
 
 export default function QrInfoModal({
     qr,
@@ -19,6 +24,7 @@ export default function QrInfoModal({
     const [section, setSection] = useState(initialSection);
     const { openDeleteQrModal, openEditQrModal } = useModals();
     const creationDate = formatLocalDate(qr.createdAt.toString())
+    const { qrAnalytics } = useQrAnalytics(qr.id);
 
     const handleOpenEditModal = (qr: QrData) => {
         onClose();
@@ -60,7 +66,7 @@ export default function QrInfoModal({
                                 </div>
                                 <div className="flex flex-col space-y-1">
                                     <p className="text-muted-foreground text-sm">Type</p>
-                                    <p>1</p>
+                                    <p>{QR_TYPES_MAP[qr.type]}</p>
                                 </div>
                                 <div className="flex flex-col space-y-1">
                                     <p className="text-muted-foreground text-sm">Total Scans</p>
@@ -82,8 +88,15 @@ export default function QrInfoModal({
 
                     {section === "analytics" && (
                         <div>
-                            <p><strong>Scan Count:</strong> {qr.scanCount}</p>
-                            <p>Graphique ou stats à mettre ici 📊</p>
+                            {qrAnalytics && (
+                                <div>
+                                    <div className="flex space-x-6">
+                                        <StatsList data={qrAnalytics.topCountries} IconComponent={Globe} title="Top Countries" />
+                                        <StatsList data={qrAnalytics.topDevices} IconComponent={Smartphone} title="Device Types" />
+                                    </div>
+                                    <RecentScans scans={qrAnalytics.mostRecent} />
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -105,7 +118,7 @@ export default function QrInfoModal({
                         </div>
                     )}
                 </div>
-            </Modal>
+            </Modal >
         </>
     );
 }

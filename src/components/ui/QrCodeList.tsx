@@ -42,9 +42,7 @@ export default function QrCodeList({
                     <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">QR Code</th>
                     <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Type</th>
                     <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Scans</th>
-                    <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Status</th>
                     <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Created</th>
-                    <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Last Scan</th>
                     <th className="text-muted-foreground font-medium h-12 px-4 text-left align-middle">Action</th>
                 </tr>
             </thead>
