@@ -113,7 +113,8 @@ This frontend consumes the QR Code API. Make sure the backend is running before 
 ![Dashboard](./public/screenshots/dashboard.png)
 
 ### QR Code Creator
-![QR Creator](./public/screenshots/qr-creator.png)
+![QR Creator 1](./public/screenshots/qr-creator-1.png)
+![QR Creator 2](./public/screenshots/qr-creator-2.png)
 
 ### Analytics
 ![Analytics](./public/screenshots/analytics.png)
