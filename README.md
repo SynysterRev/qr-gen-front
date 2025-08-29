@@ -9,9 +9,8 @@
 - Create dynamic QR codes for websites, text, WiFi, contacts, email, and SMS
 - Real-time analytics with scan tracking and device statistics
 - Custom QR code styling (colors, size, borders)
-- Multi-format export (PNG, JPEG, SVG, PDF)
+- Multi-format export (PNG, SVG, PDF)
 - User authentication and profile management
-- Responsive design for all devices
 - Dashboard with QR code management
 
 ## Quick Start
